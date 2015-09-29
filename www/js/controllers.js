@@ -29,21 +29,14 @@ angular.module('noapp.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
+.controller('DashboardCtrl', function($scope, $rootScope) {
+  $scope.userdata = $rootScope.profileData;
 })
 
 .controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAuth, $ionicLoading, $rootScope) {
     //console.log('Login Controller Initialized');
 
-    var ref = new Firebase('https://incandescent-fire-5045.firebaseio.com');
+    var ref = new Firebase($scope.firebaseUrl);
     var auth = $firebaseAuth(ref);
 
     $ionicModal.fromTemplateUrl('templates/signup.html', {
@@ -54,20 +47,27 @@ angular.module('noapp.controllers', [])
 
     $scope.createUser = function (user) {
         console.log("Create User Function called");
-        if (user && user.email && user.password && user.displayname) {
+        if (user && user.email && user.password && user.firstname && user.lastname) {
             $ionicLoading.show({
-                template: 'Signing Up...'
+                template: 'Registrando usuario...'
             });
-
+            user.zona = 'Zona 3';
             auth.$createUser({
                 email: user.email,
-                password: user.password
+                password: user.password,
+                firs_tname: user.firstname,
+                last_name: user.lastname
             }).then(function (userData) {
                 alert("User created successfully!");
                 ref.child("users").child(userData.uid).set({
                     email: user.email,
-                    displayName: user.displayname
+                    first_name: user.firstname,
+                    last_name: user.lastname,
+                    picture: 'http://placehold.it/150x150',
+                    zona: user.zona
+
                 });
+                $state.go('app.dashboard');
                 $ionicLoading.hide();
                 $scope.modal.hide();
             }).catch(function (error) {
@@ -97,7 +97,7 @@ angular.module('noapp.controllers', [])
                     });
                 });
                 $ionicLoading.hide();
-                $state.go('app.browse');
+                $state.go('app.dashboard');
             }).catch(function (error) {
                 alert("Authentication failed:" + error.message);
                 $ionicLoading.hide();
