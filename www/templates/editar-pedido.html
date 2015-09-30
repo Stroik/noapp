@@ -1,7 +1,7 @@
 <ion-modal-view>
-    <ion-header-bar class="bar bar-header bar-assertive">
-        <h1 class="title">Agregar nuevo pedido</h1>
-        <button class="button button-clear button-primary ion-close-round" ng-click="modal.hide()"></button>
+    <ion-header-bar class="bar bar-header bar-royal">
+        <h1 class="title">Modificar pedido</h1>
+        <button class="button button-clear button-primary ion-close-round" ng-click="editar.hide()"></button>
     </ion-header-bar>
     <ion-content class="padding">
         <div class="list">
@@ -17,7 +17,7 @@
                 <span class="input-label">Linea</span>
                 <input ng-model="pedido.linea" type="text">
             </label>
-            <button class="button button-full button-assertive" ng-click="agregarPedido(pedido)">Agregar</button>
+            <button class="button button-full button-royal" ng-click="saveEdit(myID)">Guardar cambios</button>
         </div>
     </ion-content>
 </ion-modal-view>

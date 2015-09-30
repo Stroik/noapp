@@ -9,23 +9,65 @@ angular.module('noapp.controllers', [])
 .controller('DashboardCtrl', function($scope, $rootScope) {
   $scope.userdata = $rootScope.profileData;
 })
-.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $ionicModal) {
+.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $ionicModal, ionicToast) {
     $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
         scope: $scope
     }).then(function (modal) {
         $scope.modal = modal;
     });
+    $ionicModal.fromTemplateUrl('templates/editar-pedido.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.editar = modal;
+    });
+
     $scope.pedido = {};
+    $scope.pedido.fecha = new Date();
+    
     var ref = new Firebase($scope.firebaseUrl).child('users').child($rootScope.authData.uid).child('pedidos');
     var list = $firebaseArray(ref);
+    
     $scope.mispedidos = list;
+    
     $scope.agregarPedido = function(pedido){
-        list.$add(pedido).then(function() {
-          var id = ref.key();
-          list.$indexFor(id); // returns location in the array
-          $scope.modal.hide();
+        if(pedido.codigo && pedido.cantidad && pedido.linea){
+            list.$add(pedido).then(function(data) {
+                //console.log(data);
+                var id = ref.key();
+                list.$indexFor(id); // returns location in the array
+                $scope.modal.hide();
+                $scope.pedido = {};
+            });
+        }else{
+            ionicToast.show('Debes completar todos los campos', 'middle', true, 2000);
+        }
+    };
+
+    $scope.removePedido = function(item){
+        var confirmar = confirm('¿Estas seguro que deseas eliminar el registro?');
+        if(confirmar){
+            list.$remove(item).then(function(ref) {
+              ref.key() === item.$id;
+            });
+        }
+    };
+        $scope.myID = '';
+    $scope.showEdit = function(index){
+        $scope.editar.show();
+        $scope.pedido.codigo = list[index].codigo;
+        $scope.pedido.cantidad = list[index].cantidad;
+        $scope.pedido.linea = list[index].linea;
+        $scope.myID = index;
+        console.log($scope.myID);
+    };
+
+    $scope.saveEdit = function(index){
+        var id = list[index].$id;
+        list.$save(id).then(function(ref) {
+          ref.key() === list[id].$id; 
         });
-    }
+        $scope.editar.hide();
+    };
 
 })
 .controller('VentasCtrl', function($scope, $rootScope) {

@@ -1,7 +1,7 @@
 var firebaseUrl = 'https://incandescent-fire-5045.firebaseio.com';
 angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'firebase', 'ngStorage', 'ionic-toast'])
 
-.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, FireObj, $firebaseObject, ionicToast) {
+.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, FireObj, $firebaseObject, ionicToast, $localStorage) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -26,7 +26,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
               console.log($rootScope.profileData);
             })
             $rootScope.authData = authData;
-            console.log($rootScope.authData);
+            //console.log($rootScope.authData);
             $location.path('/app/dashboard');
         } else {
             //console.log("No has iniciado sesión. En caso de no tener cuenta, crea una.");
@@ -50,6 +50,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
         // and redirect the user back to the home page
         if (error === "AUTH_REQUIRED") {
             $location.path("/login");
+            $localStorage.$reset();
         }
     });
 })
