@@ -1,39 +1,41 @@
 angular.module('noapp.controllers', [])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
-  $scope.loginData = {};
 
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
 })
+.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
+})
 .controller('DashboardCtrl', function($scope, $rootScope) {
   $scope.userdata = $rootScope.profileData;
 })
+.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $ionicModal) {
+    $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.modal = modal;
+    });
+    $scope.pedido = {};
+    var ref = new Firebase($scope.firebaseUrl).child('users').child($rootScope.authData.uid).child('pedidos');
+    var list = $firebaseArray(ref);
+    $scope.mispedidos = list;
+    $scope.agregarPedido = function(pedido){
+        list.$add(pedido).then(function() {
+          var id = ref.key();
+          list.$indexFor(id); // returns location in the array
+          $scope.modal.hide();
+        });
+    }
 
-.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAuth, $ionicLoading, $rootScope) {
+})
+.controller('VentasCtrl', function($scope, $rootScope) {
+
+})
+.controller('ProductosCtrl', function($scope, $rootScope) {
+
+})
+
+.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAuth, $ionicLoading, $rootScope, ionicToast, $localStorage) {
     //console.log('Login Controller Initialized');
 
     var ref = new Firebase($scope.firebaseUrl);
@@ -46,7 +48,7 @@ angular.module('noapp.controllers', [])
     });
 
     $scope.createUser = function (user) {
-        console.log("Create User Function called");
+        //console.log("Create User Function called");
         if (user && user.email && user.password && user.firstname && user.lastname) {
             $ionicLoading.show({
                 template: 'Registrando usuario...'
@@ -58,14 +60,14 @@ angular.module('noapp.controllers', [])
                 firs_tname: user.firstname,
                 last_name: user.lastname
             }).then(function (userData) {
-                alert("User created successfully!");
+                //alert("User created successfully!");
+                ionicToast.show('Registro exitoso. ¡Bienvenido!', 'middle', false, 2000);
                 ref.child("users").child(userData.uid).set({
                     email: user.email,
                     first_name: user.firstname,
                     last_name: user.lastname,
                     picture: 'http://placehold.it/150x150',
                     zona: user.zona
-
                 });
                 $state.go('app.dashboard');
                 $ionicLoading.hide();
@@ -82,27 +84,27 @@ angular.module('noapp.controllers', [])
 
         if (user && user.email && user.pwdForLogin) {
             $ionicLoading.show({
-                template: 'Signing In...'
+                template: 'Ingresando...'
             });
             auth.$authWithPassword({
                 email: user.email,
                 password: user.pwdForLogin
             }).then(function (authData) {
-                console.log("Logged in as:" + authData.uid);
+                //console.log("Logged in as:" + authData.uid);
                 ref.child("usuarios").child(authData.uid).once('value', function (snapshot) {
                     var val = snapshot.val();
                     // To Update AngularJS $scope either use $apply or $timeout
-                    $scope.$apply(function () {
-                        $rootScope.displayName = val;
-                    });
+                    //$scope.$apply(function () {
+                    //    $rootScope.displayName = val;
+                    //});
                 });
                 $ionicLoading.hide();
                 $state.go('app.dashboard');
             }).catch(function (error) {
-                alert("Authentication failed:" + error.message);
+                alert("Ingreso incorrecto:" + error.message);
                 $ionicLoading.hide();
             });
         } else
-            alert("Please enter email and password both");
+            alert("Debe completar ambos campos");
     }
 });

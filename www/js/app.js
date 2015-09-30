@@ -1,7 +1,7 @@
 var firebaseUrl = 'https://incandescent-fire-5045.firebaseio.com';
-angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'firebase', 'ngStorage'])
+angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'firebase', 'ngStorage', 'ionic-toast'])
 
-.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, FireObj, $firebaseObject) {
+.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, FireObj, $firebaseObject, ionicToast) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -17,7 +17,6 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
   ionic.Platform.fullScreen();
 
     $rootScope.firebaseUrl = firebaseUrl;
-    $rootScope.displayName = null;
 
     Auth.$onAuth(function (authData) {
         if (authData) {
@@ -26,10 +25,13 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             obj.$bindTo($rootScope, 'profileData').then(function(){
               console.log($rootScope.profileData);
             })
+            $rootScope.authData = authData;
+            console.log($rootScope.authData);
             $location.path('/app/dashboard');
         } else {
-            console.log("No has iniciado sesión. En caso de no tener cuenta, crea una.");
+            //console.log("No has iniciado sesión. En caso de no tener cuenta, crea una.");
             $ionicLoading.hide();
+            ionicToast.show('Cerrando sessión', 'middle', false, 2000);
             $location.path('/login');
         }
     });
@@ -37,7 +39,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     $rootScope.logout = function () {
         console.log("Logging out from the app");
         $ionicLoading.show({
-            template: 'Logging Out...'
+            template: 'Cerrando sesión'
         });
         Auth.$unauth();
     }
@@ -52,7 +54,8 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  $ionicConfigProvider.tabs.position('bottom');
   $stateProvider
 
     .state('app', {
@@ -80,30 +83,31 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     }
   })
 
-  .state('app.browse', {
-      url: '/browse',
+  .state('app.pedidos', {
+      url: '/pedidos',
       views: {
         'menuContent': {
-          templateUrl: 'templates/browse.html'
+          templateUrl: 'templates/pedidos.html',
+          controller: 'PedidosCtrl'
         }
       }
     })
-    .state('app.playlists', {
-      url: '/playlists',
+    .state('app.ventas', {
+      url: '/ventas',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
-          controller: 'PlaylistsCtrl'
+          templateUrl: 'templates/ventas.html',
+          controller: 'VentasCtrl'
         }
       }
     })
 
-  .state('app.single', {
-    url: '/playlists/:playlistId',
+  .state('app.productos', {
+    url: '/productos',
     views: {
       'menuContent': {
-        templateUrl: 'templates/playlist.html',
-        controller: 'PlaylistCtrl'
+        templateUrl: 'templates/productos.html',
+        controller: 'ProductosCtrl'
       }
     }
   })

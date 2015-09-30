@@ -1,4 +1,8 @@
 /* Empty. Add your own CSS if you like */
 img.logo {
-  width: 100%;
+  width: 175px;
+}
+.list.logo {
+  text-align: center;
+  margin-bottom: -20px;
 }
