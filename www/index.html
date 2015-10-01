@@ -11,8 +11,7 @@
     <!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
     <link href="css/ionic.app.css" rel="stylesheet">
     -->
-
-    <!-- ionic/angularjs js -->
+        <!-- ionic/angularjs js -->
     <script src="lib/ionic/js/ionic.bundle.js"></script>
     <script src="lib/lodash/lodash.js"></script>
     <script src="lib/firebase/firebase.js"></script>
@@ -21,13 +20,16 @@
     <script src="lib/ionic-toast/dist/ionic-toast.bundle.min.js"></script>
 
 
-    <!-- cordova script (this will be a 404 during development) -->
-    <script src="cordova.js"></script>
-
     <!-- your app's js -->
     <script src="js/app.js"></script>
     <script src="js/services.js"></script>
-    <script src="js/controllers.js"></script>
+    <script src="js/controllers/loginCtrl.js"></script>
+    <script src="js/controllers/pedidosCtrl.js"></script>
+    <script src="js/controllers/dashboardCtrl.js"></script>
+    <script src="js/controllers/productosCtrl.js"></script>
+    
+    <!-- cordova script (this will be a 404 during development) -->
+    <script src="cordova.js"></script>
   </head>
 
   <body ng-app="noapp">

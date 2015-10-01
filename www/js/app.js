@@ -1,4 +1,8 @@
 var firebaseUrl = 'https://incandescent-fire-5045.firebaseio.com';
+
+angular.module('noapp.controllers', ['ionic']);
+angular.module('noapp.services', ['ionic', 'ui.router']);
+angular.module('noapp.directives', ['ionic', 'ui.router']);
 angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'firebase', 'ngStorage', 'ionic-toast'])
 
 .run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, FireObj, $firebaseObject, ionicToast, $localStorage) {
@@ -42,6 +46,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             template: 'Cerrando sesión'
         });
         Auth.$unauth();
+        $state.go('app.login');
     }
 
 

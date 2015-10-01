@@ -1,5 +1,13 @@
-<ion-view view-title="Playlist">
+<ion-view view-title="Productos">
   <ion-content>
-    <h1>Playlist</h1>
+	<ion-list>
+		<ion-item ng-repeat="producto in productos" class="list">
+			 <a class="item item-thumbnail-left" href="#">
+				<img ng-src="{{producto.imagen}}"  />
+				<h2>{{producto.titulo}}</h2>
+				<p>{{producto.descripcion}} | Código: {{producto.codigo}}</p>
+			</a>	
+		</ion-item>
+	</ion-list>
   </ion-content>
 </ion-view>
