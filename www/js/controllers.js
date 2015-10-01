@@ -51,7 +51,7 @@ angular.module('noapp.controllers', [])
             });
         }
     };
-        $scope.myID = '';
+        $scope.myID = null;
     $scope.showEdit = function(index){
         $scope.editar.show();
         $scope.pedido.codigo = list[index].codigo;
@@ -62,9 +62,14 @@ angular.module('noapp.controllers', [])
     };
 
     $scope.saveEdit = function(index){
-        var id = list[index].$id;
-        list.$save(id).then(function(ref) {
-          ref.key() === list[id].$id; 
+        var ultima_fecha = new Date().getHours()+':'+new Date().getMinutes()+' | '+new Date().getDay()+'/'+new Date().getMonth()+'/'+new Date().getFullYear();
+        list[index].codigo = $scope.pedido.codigo;
+        list[index].cantidad = $scope.pedido.cantidad;
+        list[index].linea = $scope.pedido.linea;
+        list[index].ultima_edicion = ultima_fecha;
+        list.$save(index).then(function(ref) {
+          ref.key() === list[index].$id;
+          console.log(ref.key() + ' = ' + list[index].$id);
         });
         $scope.editar.hide();
     };
