@@ -46,7 +46,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             template: 'Cerrando sesión'
         });
         Auth.$unauth();
-        $state.go('app.login');
+        $location.path('/app/login');
     }
 
 

@@ -42,7 +42,8 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $io
             });
         }
     };
-        $scope.myID = null;
+    
+    $scope.myID = null;
     $scope.showEdit = function(index){
         $scope.editar.show();
         $scope.pedido.codigo = list[index].codigo;

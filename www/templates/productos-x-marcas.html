@@ -1,0 +1,18 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-assertive">
+        <h1 class="title">{{titulo}}</h1>
+        <button class="button button-clear button-primary ion-close-round" ng-click="modal.hide()"></button>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="producto in productosMarca" class="item item-thumbnail-left item-remove-animate" >
+                    <img ng-cache ng-src="{{producto.imagen}}"  />
+                    <h2>{{producto.nombre}}</h2>
+                    <p>{{producto.descripcion}}</p> 
+                    <p> Código: {{producto.codigo}}</p> 
+                    
+                    <ion-option-button class="button-dark icon ion-plus-circled" ng-click=""></ion-option-button>
+            </ion-item>
+    </ion-list>
+    </ion-content>
+</ion-modal-view>

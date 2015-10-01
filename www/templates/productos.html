@@ -1,12 +1,11 @@
-<ion-view view-title="Productos">
+<ion-view view-title="Marcas">
   <ion-content>
 	<ion-list>
-		<ion-item ng-repeat="producto in productos" class="list">
-			 <a class="item item-thumbnail-left" href="#">
-				<img ng-src="{{producto.imagen}}"  />
-				<h2>{{producto.titulo}}</h2>
-				<p>{{producto.descripcion}} | Código: {{producto.codigo}}</p>
-			</a>	
+		<ion-item ng-repeat="marca in productos" class="item item-thumbnail-left item-remove-animate" ng-if="marca.stock" ng-click="productosXMarca($index)" >
+				<img ng-cache ng-src="{{marca.imagen}}"  />
+				<h2>{{marca.marca}}</h2>
+				<p>{{marca.descripcion}}</p>	
+				<p> Código: {{marca.codigo}}</p>	
 		</ion-item>
 	</ion-list>
   </ion-content>
