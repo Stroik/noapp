@@ -35,13 +35,12 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
         } else {
             //console.log("No has iniciado sesión. En caso de no tener cuenta, crea una.");
             $ionicLoading.hide();
-            ionicToast.show('Cerrando sessión', 'middle', false, 2000);
+            ionicToast.show('Debes iniciar sesión', 'middle', false, 2000);
             $location.path('/login');
         }
     });
 
     $rootScope.logout = function () {
-        console.log("Logging out from the app");
         $ionicLoading.show({
             template: 'Cerrando sesión'
         });

@@ -6,6 +6,7 @@
 				<p>Cantidad: {{pedido.cantidad}} | Linea: {{pedido.linea}} || {{pedido.$id}}</p>
 				<ion-option-button class="button-dark icon ion-edit" ng-click="showEdit($index)"></ion-option-button>
 				<ion-option-button class="button-assertive icon ion-trash-a" ng-click="removePedido($index)"></ion-option-button>
+				<ion-option-button class="button-assertive icon ion-paper-airplane" ng-click="agregarPedido(pedido)"></ion-option-button>
 			</ion-item>
 		</ion-list>
 	</ion-content>
