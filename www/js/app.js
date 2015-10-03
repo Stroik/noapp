@@ -5,7 +5,7 @@ angular.module('noapp.services', ['ionic', 'ui.router']);
 angular.module('noapp.directives', ['ionic', 'ui.router']);
 angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'firebase', 'ngStorage', 'ionic-toast'])
 
-.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, FireObj, $firebaseObject, ionicToast, $localStorage) {
+.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, FireObj, $firebaseObject, ionicToast, $localStorage, $state) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -18,12 +18,13 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
 
   //$rootScope vars
 
-  ionic.Platform.fullScreen();
+  //ionic.Platform.fullScreen();
 
     $rootScope.firebaseUrl = firebaseUrl;
 
     Auth.$onAuth(function (authData) {
         if (authData) {
+
             var ref = new Firebase($rootScope.firebaseUrl).child('users').child(authData.uid);
             var obj = $firebaseObject(ref);
             obj.$bindTo($rootScope, 'profileData').then(function(){
@@ -32,7 +33,11 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             $rootScope.authData = authData;
             //console.log($rootScope.authData);
             $location.path('/app/dashboard');
-        } else {
+        }
+        else if(!authData || first_name == undefined || !first_name){
+          $state.go($state.current, {}, {reload: true});
+        } 
+        else {
             //console.log("No has iniciado sesión. En caso de no tener cuenta, crea una.");
             $ionicLoading.hide();
             ionicToast.show('Debes iniciar sesión', 'middle', false, 2000);

@@ -3,26 +3,17 @@
         <h1 class="title" ng-click="alert('fafa')">{{pedido.cliente.nombres}} {{pedido.cliente.apellidos}}</h1>
         <button class="button button-clear button-primary ion-close-round" ng-click="editar.hide()"></button>
     </ion-header-bar>
-    <ion-content class="padding">
-        <div ng-repeat="prod in pedido.productos" class="item item-avatar item-remove-animate">
-            <h2>{{prod.nombre}}</h2>
-            <p>Precio: {{prod.precio}}</p>
-            <p>Cantidad: {{prod.cantidad}}</p>
-        </div>
-        <div class="list">
-            <label class="item item-input">
-                <span class="input-label">Codigo</span>
-                <input ng-model="pedido.codigo" type="text">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Cantidad</span>
-                <input ng-model="pedido.cantidad" type="text">
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Linea</span>
-                <input ng-model="pedido.linea" type="text">
-            </label>
-            <button class="button button-full button-royal" ng-click="saveEdit(myID)">Guardar cambios</button>
-        </div>
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="prod in pedidos"  class="item item-thumbnail-left item-remove-animate">
+                <img src="img/productos/placeholder.png" />
+                <h2>{{prod.nombre}}</h2>
+                <p>Precio: {{prod.precio}}</p>
+                <p>Cantidad: {{prod.cantidad}}</p>
+
+            <ion-option-button class="button-dark icon ion-trash-b" ng-click="delProduct($index)">
+            </ion-option-button>
+            </ion-item>
+        </ion-list>
     </ion-content>
 </ion-modal-view>

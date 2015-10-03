@@ -11,7 +11,7 @@ noapp.controller('ProductosCtrl', function($scope, $rootScope, $firebaseArray, $
     var misProductos = new Firebase($scope.firebaseUrl).child('marcas');
     var listaProductos = $firebaseArray(misProductos);
 
-    $rootScope.productos = [];
+    $rootScope.productos = {};
 
     $scope.productos = listaProductos;
     $scope.productosMarca = {};

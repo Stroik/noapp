@@ -1,6 +1,6 @@
 var noapp = angular.module('noapp.controllers');
 
-noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $ionicModal, ionicToast) {
+noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $firebaseObject, $ionicModal, ionicToast) {
     var d = new Date(),
         dia = (d.getDay()-3),
         mes = (d.getMonth()+1),
@@ -34,7 +34,7 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $io
     });
 
     $scope.pedido = {};
-    $scope.pedido.cliente = {nombres: "Manuel Dario", apellidos: "Canteros", cbu: "30340834834530945", numero_cuenta: "z731", moroso: false};
+    $scope.pedido.cliente = {nombres: "Jimeno Homero", apellidos: "Canteros", cbu: "30340834834530945", numero_cuenta: "z731", moroso: false};
     $scope.pedido.productos = $rootScope.productos;
     $scope.pedido.vendedor = $rootScope.profileData.first_name + ' ' + $rootScope.profileData.last_name;
     $scope.zona = $rootScope.profileData.zona;
@@ -43,18 +43,21 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $io
     
     var ref = new Firebase($scope.firebaseUrl).child('users').child($rootScope.authData.uid).child('pedidos');
     var list = $firebaseArray(ref);
-    
-    $scope.mispedidos = list;
+
+    var refZonas = new Firebase($scope.firebaseUrl).child('zonas');
+    var listZonas = $firebaseArray(refZonas);
+
+    $scope.mispedidos = list.$watch(function(event){
+        $scope.mispedidos = list;
+    })
     
     $scope.agregarPedido = function(pedido){
-        if(pedido.codigo && pedido.linea){
+        if(pedido){
             console.log($scope.pedido);
             if(pedido.productos == undefined){
                 console.log('necesito productos!');
             }else{
-                $
-
-                list.$add(pedido).then(function(data) {
+                list.$add($scope.pedido).then(function(data) {
                     console.log($scope.pedido);
                     //console.log(data);
                     var id = ref.key();
@@ -79,23 +82,30 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $io
     
     $scope.myID = null;
     $scope.showEdit = function(index){
+        $scope.pedidos = list[index].productos;
         $scope.editar.show();
-        $scope.pedido.codigo = list[index].codigo;
-        $scope.pedido.cantidad = list[index].cantidad;
-        $scope.pedido.linea = list[index].linea;
         $scope.myID = index;
+        $scope.myIndex = list[index].$id;
         //console.log($scope.myID);
     };
     $scope.saveEdit = function(index){
-        list[index].codigo = $scope.pedido.codigo;
-        list[index].cantidad = $scope.pedido.cantidad;
-        list[index].linea = $scope.pedido.linea;
         list[index].ultima_edicion = fechaHora;
         list.$save(index).then(function(ref) {
           ref.key() === list[index].$id;
-          //console.log(ref.key() + ' = ' + list[index].$id);
+
         });
         $scope.editar.hide();
     };
+    $scope.delProduct = function(index){
+
+        var confirmar = confirm('¿Estas seguro que deseas eliminar el producto?');
+        if(confirmar){
+            var refProd = new Firebase($scope.firebaseUrl).child('users').child($rootScope.authData.uid).child('pedidos').child($scope.myIndex).child('productos');
+            var listp = $firebaseObject(refProd);
+
+            var l = listp;
+            console.log(l);
+        }
+    }
 
 })
