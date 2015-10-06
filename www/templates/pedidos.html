@@ -1,9 +1,10 @@
 <ion-view view-title="Mis pedidos">
 	<ion-content>
 		<ion-list show-delete="false" can-swipe="true">
-			<ion-item class="item-remove-animate" ng-repeat="pedido in mispedidos">
-				{{pedido.codigo}}
-				<p>Cantidad: {{pedido.cantidad}} | Linea: {{pedido.linea}} || </p>
+			<ion-item class="item-remove-animate" ng-repeat="pedido in pedidosF" ng-if="pedido.productos">
+				<h2>{{pedido.cliente.nombres}} {{pedido.cliente.apellidos}}</h2>
+				<p>{{pedido.fecha}}</p>
+				<p>De: {{pedido.vendedor}}</p>
 				<ion-option-button class="button-assertive icon ion-trash-a" ng-click="removePedido($index)"></ion-option-button>
 				<ion-option-button class="button-dark icon ion-eye" ng-click="showEdit($index)"></ion-option-button>
 			</ion-item>
@@ -11,7 +12,7 @@
 	</ion-content>
 	<ion-tabs class="tabs-assertive tabs-icon-only">
 
-	  <ion-tab title="Nuevo pedido" icon-on="ion-plus-circled" icon-off="ion-plus-circled" ng-click="modal.show()">
+	  <ion-tab title="Nuevo pedido" icon-on="ion-plus-circled" icon-off="ion-plus-circled" ng-click="showNuevoPedido()">
 	  </ion-tab>
 
 	</ion-tabs>

@@ -1,15 +1,39 @@
 <ion-modal-view>
     <ion-header-bar class="bar bar-header bar-assertive">
-        <h1 class="title">Agregar nuevo pedido</h1>
+        <h1 class="title">Nuevo pedido</h1>
         <button class="button button-clear button-primary ion-close-round" ng-click="modal.hide()"></button>
     </ion-header-bar>
-    <ion-content class="padding">
+    <ion-content>
+        <div class="card" ng-show="leproduct == undefined || leproduct == [] || leproduct == '[]'" ng-click="pedidoSinProductos()">
+          <div class="item item-text-wrap">
+            Selecciona el cliente y pulsa aquí para <strong>agregar productos</strong>.
+          </div>
+        </div>
+
         <div class="list">
             <label class="item item-input">
-                <span class="input-label">Codigo</span>
-                <input ng-model="pedido.codigo" type="text">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Buscar cliente">
             </label>
-            <button class="button button-full button-assertive" ng-click="agregarPedido(pedido)">Agregar</button>
+            <label class="item item-input item-select">
+                <div class="input-label">
+                  Cliente
+                </div>
+                <select ng-model="pedido.cliente" ng-options="cliente.nombre_completo for cliente in allClientes track by cliente.$id">
+                  <option>{{cliente.nombres}} {{cliente.apellidos}}</option>
+                </select>
+            </label>
         </div>
+        <ion-list>
+            <ion-item class="item item-thumbnail-left item-remove-animate" ng-repeat="prd in leproduct">
+                <img ng-src="{{prd.imagen}}" />
+                <h2>{{prd.nombre}}</h2>
+                <p>Codigo: {{prd.codigo}}</p>
+                <p>Cantidad: {{prd.cantidad}}</p>
+
+                <ion-option-button class="button-assertive icon ion-trash-a" ng-click="removePedido($index)"></ion-option-button>
+            </ion-item>
+        <ion-list>
+        <button class="button button-full button-assertive" ng-click="agregarPedido(pedido)">Agregar pedido</button>
     </ion-content>
 </ion-modal-view>

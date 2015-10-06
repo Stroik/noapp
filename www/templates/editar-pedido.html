@@ -1,18 +1,25 @@
 <ion-modal-view>
     <ion-header-bar class="bar bar-header bar-assertive">
-        <h1 class="title" ng-click="alert('fafa')">{{pedido.cliente.nombres}} {{pedido.cliente.apellidos}}</h1>
+        <h1 class="title">Solicitud</h1>
         <button class="button button-clear button-primary ion-close-round" ng-click="editar.hide()"></button>
     </ion-header-bar>
     <ion-content>
         <ion-list>
+            <ion-item class="item item-divider"><h2>Cliente</h2></ion-item>
+            <ion-item class="item item-thumbnail-left">
+                <img ng-src="{{cliente.imagen}}" />
+                <h2>{{cliente.nombres}} {{cliente.apellidos}}</h2>
+                <p>N° de cuenta: {{cliente.numero_cuenta}}</p>
+                <p ng-show="cliente.moroso" style="color:red;">Posee deudas incumplidas</p>
+                <p ng-show="!cliente.moroso" style="color:green">No posee deudas</p>
+            </ion-item>
+
+            <ion-item class="item item-divider"><h2>Productos</h2></ion-item>
             <ion-item ng-repeat="prod in pedidos"  class="item item-thumbnail-left item-remove-animate">
                 <img src="img/productos/placeholder.png" />
                 <h2>{{prod.nombre}}</h2>
                 <p>Precio: {{prod.precio}}</p>
                 <p>Cantidad: {{prod.cantidad}}</p>
-
-            <ion-option-button class="button-dark icon ion-trash-b" ng-click="delProduct($index)">
-            </ion-option-button>
             </ion-item>
         </ion-list>
     </ion-content>

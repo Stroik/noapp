@@ -34,13 +34,11 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             //console.log($rootScope.authData);
             $location.path('/app/dashboard');
         }
-        else if(!authData || first_name == undefined || !first_name){
-          $state.go($state.current, {}, {reload: true});
-        } 
         else {
             //console.log("No has iniciado sesión. En caso de no tener cuenta, crea una.");
             $ionicLoading.hide();
             ionicToast.show('Debes iniciar sesión', 'middle', false, 2000);
+            $rootScope.logout();
             $location.path('/login');
         }
     });
@@ -51,6 +49,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
         });
         Auth.$unauth();
         $location.path('/app/login');
+        $ionicLoading.hide();
     }
 
 

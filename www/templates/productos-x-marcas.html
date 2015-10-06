@@ -4,8 +4,12 @@
         <button class="button button-clear button-primary ion-close-round" ng-click="modal.hide()"></button>
     </ion-header-bar>
     <ion-content>
+        <label class="item item-input">
+            <i class="icon ion-search placeholder-icon"></i>
+            <input type="text" placeholder="Buscar" ng-model="search">
+        </label>
         <ion-list>
-            <ion-item ng-repeat="producto in productosMarca" class="item item-thumbnail-left item-remove-animate" >
+            <ion-item ng-repeat="producto in productosMarca | filter: search" class="item item-thumbnail-left item-remove-animate" >
                     <img ng-cache ng-src="{{producto.imagen}}"  />
                     <h2>{{producto.nombre}}</h2>
                     <p>{{producto.descripcion}}</p> 
