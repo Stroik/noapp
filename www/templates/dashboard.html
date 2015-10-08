@@ -1,20 +1,32 @@
 <ion-view view-title="Descuentos">
   <ion-content>
-	<div class="list card">
-	  <div class="item item-avatar">
-	    <img ng-src="{{profileData.picture}}">
-	    <h2>{{profileData.first_name}} {{profileData.last_name}}</h2>
-	    <p>{{profileData.zona}}</p>
-	  </div>
+	<ion-list>
+		<ion-item class="item item-divider"><h2>Descuentos del día</h2></ion-item>
+		<ion-item ng-repeat="diario in descuentos.descuentos_del_dia | limitTo: 3" class="item item-thumbnail-left">
+				<img ng-src="{{diario.imagen}}" alt="">
+				<h2>{{diario.titulo}}</h2>
+				<p>{{diario.bases}}</p>
+				<p>Codigo: {{diario.codigo_promocional}}</p>
+				<ion-option-button class="button-dark icon ion-eye" ng-click="showDescuentos($index, 'descuentos_del_dia')"></ion-option-button>
+		</ion-item>
 
-	  <div class="item item-image">
-	    <img ng-src="{{profileData.picture}}">
-	  </div>
+		<ion-item class="item item-divider"><h2>Descuentos de la semana</h2></ion-item>
+		<ion-item ng-repeat="diario in descuentos.descuentos_semanales | limitTo: 3" class="item item-thumbnail-left">
+				<img ng-src="{{diario.imagen}}" alt="">
+				<h2>{{diario.titulo}}</h2>
+				<p>{{diario.bases}}</p>
+				<p>Codigo: {{diario.codigo_promocional}}</p>
+				<ion-option-button class="button-dark icon ion-eye" ng-click="showDescuentos($index, 'descuentos_semanales')"></ion-option-button>
+		</ion-item>
 
-	  <a class="item item-icon-left assertive" href="#">
-	    <i class="icon ion-music-note"></i>
-	    Start listening
-	  </a>
-	</div>
+		<ion-item class="item item-divider"><h2>Descuentos del mes</h2></ion-item>
+		<ion-item ng-repeat="diario in descuentos.descuentos_mensuales | limitTo: 3" class="item item-thumbnail-left">
+				<img ng-src="{{diario.imagen}}" alt="">
+				<h2>{{diario.titulo}}</h2>
+				<p>{{diario.bases}}</p>
+				<p>Codigo: {{diario.codigo_promocional}}</p>
+				<ion-option-button class="button-dark icon ion-eye" ng-click="showDescuentos($index, 'descuentos_mensuales')"></ion-option-button>
+		</ion-item>
+	</ion-list>
   </ion-content>
 </ion-view>

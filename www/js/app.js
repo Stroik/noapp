@@ -28,7 +28,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             var ref = new Firebase($rootScope.firebaseUrl).child('users').child(authData.uid);
             var obj = $firebaseObject(ref);
             obj.$bindTo($rootScope, 'profileData').then(function(){
-              console.log($rootScope.profileData);
+              //console.log($rootScope.profileData);
             })
             $rootScope.authData = authData;
             //console.log($rootScope.authData);

@@ -13,13 +13,13 @@
         <div class="list">
             <label class="item item-input">
                 <i class="icon ion-search placeholder-icon"></i>
-                <input type="text" placeholder="Buscar cliente">
+                <input type="text" placeholder="Buscar cliente" ng-model="mysearch">
             </label>
             <label class="item item-input item-select">
                 <div class="input-label">
                   Cliente
                 </div>
-                <select ng-model="pedido.cliente" ng-options="cliente.nombre_completo for cliente in allClientes track by cliente.$id">
+                <select ng-model="pedido.cliente" ng-options="cliente.nombre_completo for cliente in allClientes | filter: mysearch">
                   <option>{{cliente.nombres}} {{cliente.apellidos}}</option>
                 </select>
             </label>

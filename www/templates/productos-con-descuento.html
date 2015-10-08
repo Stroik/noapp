@@ -1,0 +1,25 @@
+<ion-modal-view>
+    <ion-header-bar class="bar bar-header bar-assertive">
+        <h1 class="title">{{promocion.titulo}}</h1>
+        <button class="button button-clear button-primary ion-close-round" ng-click="modal.hide()"></button>
+    </ion-header-bar>
+    <ion-content>
+        <ion-list>
+            <ion-item class="item item-divider">Detalle</ion-item>
+            <ion-item class="item">
+                <p><strong>Términos y condiciones</strong></p>
+                <p class="tyc">{{promocion.bases}}</p>
+            </ion-item>
+            
+            <ion-item class="item item-divider">Aplicable en los productos</ion-item>
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" placeholder="Filtrar productos" ng-model="search">
+            </label>   
+            <ion-item ng-repeat="producto in promocion.productos | filter: search" class="item" >
+                    <h2>{{producto.nombre}}</h2>
+                    <p>{{producto.codigo}}</p>  
+            </ion-item>
+    </ion-list>
+    </ion-content>
+</ion-modal-view>

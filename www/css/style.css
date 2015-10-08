@@ -6,3 +6,6 @@ img.logo {
   text-align: center;
   margin-bottom: -20px;
 }
+p.tyc {
+  white-space: initial;
+}

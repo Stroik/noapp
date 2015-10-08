@@ -1,28 +1,35 @@
 var noapp = angular.module('noapp.controllers');
 
 noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $firebaseObject, $ionicModal, ionicToast, $state, $timeout) {
-    var d = new Date(),
-        dia = (d.getDay()-3),
-        mes = (d.getMonth()+1),
-        anio = d.getFullYear(),
-        hora = d.getHours(),
-        minutos =  d.getMinutes(),
-        ampm = hora >= 12 ? 'PM' : 'AM',
-        fechaHora = dia + '/' + mes + '/' + anio + ' - ' + hora + ':' + minutos + ' ' + ampm;    
-
-    /*Array.prototype.sum = function (prop) {
-        if(angular.isDefined(prop)){
-            var total = 0
-            for ( var i = 0, _len = this.length; i < _len; i++ ) {
-                total += this[i][prop]
-            }
-            return total;
-        }else{
-            return 0;
+    function getDateTime() {
+        var now     = new Date(); 
+        var year    = now.getFullYear();
+        var month   = now.getMonth()+1; 
+        var day     = now.getDate();
+        var hour    = now.getHours();
+        var minute  = now.getMinutes();
+        var second  = now.getSeconds(); 
+        if(month.toString().length == 1) {
+            var month = '0'+month;
         }
-    }*/
-
-    $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
+        if(day.toString().length == 1) {
+            var day = '0'+day;
+        }   
+        if(hour.toString().length == 1) {
+            var hour = '0'+hour;
+        }
+        if(minute.toString().length == 1) {
+            var minute = '0'+minute;
+        }
+        if(second.toString().length == 1) {
+            var second = '0'+second;
+        }
+        var ampm = hour >= 12 ? 'PM' : 'AM';
+        var dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute+':'+second + ' ' + ampm;   
+         return dateTime;
+    }
+ 
+   $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
         scope: $scope
     }).then(function (modal) {
         $scope.modal = modal;
@@ -41,14 +48,16 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $fi
     $scope.pedido.vendedor = $rootScope.profileData.first_name + ' ' + $rootScope.profileData.last_name;
     $scope.zona = $rootScope.profileData.zona;
     $scope.pedido.procesado = false;
-    //$scope.pedido.precio_parcial = $scope.pedido.productos.sum("precio") || 0;
-    $scope.pedido.fecha = fechaHora;
+    $scope.pedido.fecha = getDateTime();
     
     var ref = new Firebase($scope.firebaseUrl).child('users').child($rootScope.authData.uid).child('pedidos');
     var list = $firebaseArray(ref);
     $scope.pedidosF = list;
 
-
+    $scope.$on('$destroy', function() {
+        $scope.modal.remove();
+    });
+    
     var refZonas = new Firebase($scope.firebaseUrl).child('zonas');
     var listZonas = $firebaseArray(refZonas);
 

@@ -1,5 +1,5 @@
 <ion-view view-title="Iniciar sesión" class="bar-assertive" hide-back-button="true">
-    <ion-content class="padding" scroll="false">
+    <ion-content class="padding" scroll="true">
         <div class="list logo">
             <img src="img/logo.png" class="logo">
         </div>
@@ -12,13 +12,12 @@
                 <span class="input-label">Contraseña</span>
                 <input type="password" ng-model="user.pwdForLogin">
             </label>
-            
-            <button ng-click="signIn(user)" class="button button-block button-assertive activated">
-                Ingresar
-            </button>
-            <button ng-click="modal.show()" class="button button-block button-stable activated">
-                Crear una nueva cuenta
-            </button>
         </div>
+        <button ng-click="signIn(user)" class="button button-block button-assertive activated">
+                Ingresar
+        </button>
+        <!--<button ng-click="modal.show()" class="button button-block button-stable activated">
+            Crear una nueva cuenta
+        </button> -->
     </ion-content>
 </ion-view>

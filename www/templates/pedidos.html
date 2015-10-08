@@ -1,7 +1,7 @@
 <ion-view view-title="Mis pedidos">
 	<ion-content>
 		<ion-list show-delete="false" can-swipe="true">
-			<ion-item class="item-remove-animate" ng-repeat="pedido in pedidosF" ng-if="pedido.productos">
+			<ion-item class="item-remove-animate" ng-repeat="pedido in pedidosF" ng-if="pedido.productos && !pedido.procesado">
 				<h2>{{pedido.cliente.nombres}} {{pedido.cliente.apellidos}}</h2>
 				<p>{{pedido.fecha}}</p>
 				<p>De: {{pedido.vendedor}}</p>

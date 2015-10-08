@@ -32,7 +32,7 @@ noapp.controller('ProductosCtrl', function($scope, $rootScope, $firebaseArray, $
                 },
                 {
                     text: '<b>Agregar</b>',
-                    type: 'button-positive',
+                    type: 'button-assertive',
                     onTap: function(e) {
                         if (!$rootScope.productos.cantidad) {
                             e.preventDefault();
