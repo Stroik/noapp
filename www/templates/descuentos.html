@@ -2,30 +2,27 @@
   <ion-content>
 	<ion-list>
 		<ion-item class="item item-divider"><h2>Descuentos del día</h2></ion-item>
-		<ion-item ng-repeat="diario in descuentos.descuentos_del_dia | limitTo: 3" class="item item-thumbnail-left">
+		<ion-item ng-repeat="diario in descuentos.descuentos_del_dia | limitTo: 3" class="item item-thumbnail-left" ng-click="showDescuentos($index, 'descuentos_del_dia')">
 				<img ng-src="{{diario.imagen}}" alt="">
 				<h2>{{diario.titulo}}</h2>
 				<p>{{diario.bases}}</p>
 				<p>Codigo: {{diario.codigo_promocional}}</p>
-				<ion-option-button class="button-dark icon ion-eye" ng-click="showDescuentos($index, 'descuentos_del_dia')"></ion-option-button>
 		</ion-item>
 
 		<ion-item class="item item-divider"><h2>Descuentos de la semana</h2></ion-item>
-		<ion-item ng-repeat="diario in descuentos.descuentos_semanales | limitTo: 3" class="item item-thumbnail-left">
+		<ion-item ng-repeat="diario in descuentos.descuentos_semanales | limitTo: 3" class="item item-thumbnail-left" ng-click="showDescuentos($index, 'descuentos_semanales')">
 				<img ng-src="{{diario.imagen}}" alt="">
 				<h2>{{diario.titulo}}</h2>
 				<p>{{diario.bases}}</p>
 				<p>Codigo: {{diario.codigo_promocional}}</p>
-				<ion-option-button class="button-dark icon ion-eye" ng-click="showDescuentos($index, 'descuentos_semanales')"></ion-option-button>
 		</ion-item>
 
 		<ion-item class="item item-divider"><h2>Descuentos del mes</h2></ion-item>
-		<ion-item ng-repeat="diario in descuentos.descuentos_mensuales | limitTo: 3" class="item item-thumbnail-left">
+		<ion-item ng-repeat="diario in descuentos.descuentos_mensuales | limitTo: 3" class="item item-thumbnail-left" ng-click="showDescuentos($index, 'descuentos_mensuales')">
 				<img ng-src="{{diario.imagen}}" alt="">
 				<h2>{{diario.titulo}}</h2>
 				<p>{{diario.bases}}</p>
 				<p>Codigo: {{diario.codigo_promocional}}</p>
-				<ion-option-button class="button-dark icon ion-eye" ng-click="showDescuentos($index, 'descuentos_mensuales')"></ion-option-button>
 		</ion-item>
 	</ion-list>
   </ion-content>

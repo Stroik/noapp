@@ -9,18 +9,17 @@
             <p ng-show="cliente.moroso" style="color:red;">Posee deudas incumplidas</p>
             <p ng-show="!cliente.moroso" style="color:green">No posee deudas</p>
         </ion-item>
-        <ion-item class="item item-divider"><h2>Pedidos del mes</h2></ion-item>
-        <ion-item class="item">
-        	<p></p>
-        	<p></p>
-        	<p></p>
+        <ion-item class="item item-divider"><h2>Últimos pedidos</h2></ion-item>
+        <ion-item class="item item-icon-left" ng-repeat="pedido in dato_cliente.pedidos">
+        	<i class="icon ion-android-calendar"></i>
+            {{pedido.fecha}}
         </ion-item>
 	</ion-list>
 
   </ion-content>
 	<ion-tabs class="tabs-assertive tabs-icon-top">
 
-	  <ion-tab title="Nuevo pedido" icon-on="ion-plus-circled" icon-off="ion-plus-circled" ng-click="showNuevoPedido(dato_cliente)">
+	  <ion-tab title="Nuevo pedido" icon-on="ion-plus-circled" icon-off="ion-plus-circled" ng-click="abrirMarcas()">
 	  </ion-tab>
 	  
 	</ion-tabs>

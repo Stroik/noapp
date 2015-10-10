@@ -1,7 +1,11 @@
 <ion-view view-title="Clientes" ng-controller="ClientesCtrl">
   <ion-content>
 	<ion-list class="list">
-		<ion-item ng-repeat="cliente in todosLosClientes" 
+		<label class="item item-input">
+		    <i class="icon ion-search placeholder-icon"></i>
+		    <input type="text" placeholder="Buscar cliente" ng-model="searchCliente">
+	  	</label>
+		<ion-item ng-repeat="cliente in todosLosClientes | filter: searchCliente" 
 			 	  class="item item-icon-right" 
 				  ng-click="clienteDetalle($index)"
 			 	  href="#/app/clientes/{{$index}}">

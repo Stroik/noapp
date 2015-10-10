@@ -1,7 +1,7 @@
 <ion-modal-view>
     <ion-header-bar class="bar bar-header bar-assertive">
+    <button class="button button-clear button-primary ion-ios-arrow-back" ng-click="modal.hide()"> Cancelar</button>
         <h1 class="title">Nuevo pedido</h1>
-        <button class="button button-clear button-primary ion-close-round" ng-click="modal.hide()"></button>
     </ion-header-bar>
     <ion-content>
         <ion-list>
@@ -13,4 +13,8 @@
             </ion-item>
         </ion-list>
     </ion-content>
+    <ion-tabs class="tabs-assertive tabs-icon-top">
+      <ion-tab title="Procesar pedido" icon-on="ion-ios-checkmark" icon-off="ion-ios-checkmark-outline" ng-click="procesarPedido(pedido)">
+      </ion-tab>
+    </ion-tabs>
 </ion-modal-view>
