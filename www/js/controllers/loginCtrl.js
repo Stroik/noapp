@@ -14,7 +14,35 @@ noapp.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAu
         $scope.modal = modal;
     });
 
-    $scope.createUser = function (user) {
+    $scope.signIn = function (user) {
+
+        if (user && user.email && user.pwdForLogin) {
+            $ionicLoading.show({
+                template: '<img src="img/loading.gif" />'
+            });
+            auth.$authWithPassword({
+                email: user.email,
+                password: user.pwdForLogin
+            }).then(function (authData) {
+                //console.log("Logged in as:" + authData.uid);
+                ref.child("usuarios").child(authData.uid).once('value', function (snapshot) {
+                    var val = snapshot.val();
+                    // To Update AngularJS $scope either use $apply or $timeout
+                    //$scope.$apply(function () {
+                    //    $rootScope.displayName = val;
+                    //});
+                });
+                $ionicLoading.hide();
+                $state.go('app.descuentos');
+            }).catch(function (error) {
+                alert("Ingreso incorrecto:" + error.message);
+                $ionicLoading.hide();
+            });
+        } else
+            alert("Debe completar ambos campos");
+    }
+
+    /*$scope.createUser = function (user) {
         //console.log("Create User Function called");
         if (user && user.email && user.password && user.firstname && user.lastname) {
             $ionicLoading.show({
@@ -36,7 +64,7 @@ noapp.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAu
                     picture: 'http://placehold.it/150x150',
                     zona: user.zona
                 });
-                $state.go('app.dashboard');
+                $state.go('app.descuentos');
                 $ionicLoading.hide();
                 $scope.modal.hide();
             }).catch(function (error) {
@@ -45,33 +73,5 @@ noapp.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAu
             });
         } else
             alert("Please fill all details");
-    }
-
-    $scope.signIn = function (user) {
-
-        if (user && user.email && user.pwdForLogin) {
-            $ionicLoading.show({
-                template: 'Ingresando...'
-            });
-            auth.$authWithPassword({
-                email: user.email,
-                password: user.pwdForLogin
-            }).then(function (authData) {
-                //console.log("Logged in as:" + authData.uid);
-                ref.child("usuarios").child(authData.uid).once('value', function (snapshot) {
-                    var val = snapshot.val();
-                    // To Update AngularJS $scope either use $apply or $timeout
-                    //$scope.$apply(function () {
-                    //    $rootScope.displayName = val;
-                    //});
-                });
-                $ionicLoading.hide();
-                $state.go('app.dashboard');
-            }).catch(function (error) {
-                alert("Ingreso incorrecto:" + error.message);
-                $ionicLoading.hide();
-            });
-        } else
-            alert("Debe completar ambos campos");
-    }
+    }*/
 })

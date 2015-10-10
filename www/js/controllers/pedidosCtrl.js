@@ -9,24 +9,14 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $fi
         var hour    = now.getHours();
         var minute  = now.getMinutes();
         var second  = now.getSeconds(); 
-        if(month.toString().length == 1) {
-            var month = '0'+month;
-        }
-        if(day.toString().length == 1) {
-            var day = '0'+day;
-        }   
-        if(hour.toString().length == 1) {
-            var hour = '0'+hour;
-        }
-        if(minute.toString().length == 1) {
-            var minute = '0'+minute;
-        }
-        if(second.toString().length == 1) {
-            var second = '0'+second;
-        }
+        if(month.toString().length == 1) {var month = '0'+month;}
+        if(day.toString().length == 1) {var day = '0'+day;}   
+        if(hour.toString().length == 1) {var hour = '0'+hour;}
+        if(minute.toString().length == 1) {var minute = '0'+minute;}
+        if(second.toString().length == 1) {var second = '0'+second;}
         var ampm = hour >= 12 ? 'PM' : 'AM';
         var dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute+':'+second + ' ' + ampm;   
-         return dateTime;
+        return dateTime;
     }
  
    $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
@@ -61,12 +51,7 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $fi
     var refZonas = new Firebase($scope.firebaseUrl).child('zonas');
     var listZonas = $firebaseArray(refZonas);
 
-    var refClientes = new Firebase($scope.firebaseUrl).child('clientes');
-    var listClientes = $firebaseArray(refClientes);
-
-    $scope.allClientes = listClientes;
-
-    $scope.agregarPedido = function(pedido){
+    $rootScope.agregarPedido = function(pedido){
         console.log($rootScope.productos);
         if(pedido){
             console.log($scope.pedido);
@@ -79,7 +64,9 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, $firebaseArray, $fi
                     list.$indexFor(id);
                     $scope.modal.hide();
                     $scope.pedido = {};
+                    $rootScope.productos = [];
                 });
+
             }
         }else{
             ionicToast.show('Debes completar todos los campos', 'middle', true, 2000);

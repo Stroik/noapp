@@ -32,7 +32,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             })
             $rootScope.authData = authData;
             //console.log($rootScope.authData);
-            $location.path('/app/dashboard');
+            $location.path('/app/descuentos');
         }
         else {
             //console.log("No has iniciado sesión. En caso de no tener cuenta, crea una.");
@@ -82,12 +82,12 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     }
   })
 
-  .state('app.dashboard', {
-    url: '/dashboard',
+  .state('app.descuentos', {
+    url: '/descuentos',
     views: {
       'menuContent': {
-        templateUrl: 'templates/dashboard.html',
-        controller: 'DashboardCtrl'
+        templateUrl: 'templates/descuentos.html',
+        controller: 'DescuentosCtrl'
       }
     }
   })
@@ -101,12 +101,21 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
         }
       }
     })
-    .state('app.ventas', {
-      url: '/ventas',
+    .state('app.clientes', {
+      url: '/clientes',
       views: {
         'menuContent': {
-          templateUrl: 'templates/ventas.html',
-          controller: 'VentasCtrl'
+          templateUrl: 'templates/clientes.html',
+          controller: 'ClientesCtrl'
+        }
+      }
+    })
+    .state('app.cliente', {
+      url: '/clientes/:clienteId',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/cliente-info.html',
+          controller: 'ClienteInfoCtrl'
         }
       }
     })

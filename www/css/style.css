@@ -9,3 +9,7 @@ img.logo {
 p.tyc {
   white-space: initial;
 }
+.loading-container .loading{
+	background: transparent !important;
+	background-color: transparent !important;
+}

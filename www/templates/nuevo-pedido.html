@@ -4,36 +4,13 @@
         <button class="button button-clear button-primary ion-close-round" ng-click="modal.hide()"></button>
     </ion-header-bar>
     <ion-content>
-        <div class="card" ng-show="leproduct == undefined || leproduct == [] || leproduct == '[]'" ng-click="pedidoSinProductos()">
-          <div class="item item-text-wrap">
-            Selecciona el cliente y pulsa aquí para <strong>agregar productos</strong>.
-          </div>
-        </div>
-
-        <div class="list">
-            <label class="item item-input">
-                <i class="icon ion-search placeholder-icon"></i>
-                <input type="text" placeholder="Buscar cliente" ng-model="mysearch">
-            </label>
-            <label class="item item-input item-select">
-                <div class="input-label">
-                  Cliente
-                </div>
-                <select ng-model="pedido.cliente" ng-options="cliente.nombre_completo for cliente in allClientes | filter: mysearch">
-                  <option>{{cliente.nombres}} {{cliente.apellidos}}</option>
-                </select>
-            </label>
-        </div>
         <ion-list>
-            <ion-item class="item item-thumbnail-left item-remove-animate" ng-repeat="prd in leproduct">
-                <img ng-src="{{prd.imagen}}" />
-                <h2>{{prd.nombre}}</h2>
-                <p>Codigo: {{prd.codigo}}</p>
-                <p>Cantidad: {{prd.cantidad}}</p>
-
-                <ion-option-button class="button-assertive icon ion-trash-a" ng-click="removePedido($index)"></ion-option-button>
+            <ion-item ng-repeat="marca in productos" class="item item-thumbnail-left item-remove-animate" ng-if="marca.stock" ng-click="productosXMarca($index)" >
+                    <img ng-cache ng-src="{{marca.imagen}}"  />
+                    <h2>{{marca.marca}}</h2>
+                    <p>{{marca.descripcion}}</p>    
+                    <p> Código: {{marca.codigo}}</p>    
             </ion-item>
-        <ion-list>
-        <button class="button button-full button-assertive" ng-click="agregarPedido(pedido)">Agregar pedido</button>
+        </ion-list>
     </ion-content>
 </ion-modal-view>
