@@ -87,7 +87,7 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, $firebaseObject, $
         if(pedido){
             console.log($scope.pedido);
             if(pedido.productos == undefined){
-                console.log('necesito productos!');
+                alert('No se puede el pedido porque todavía no has agregado productos');
             }else{
                 objcliente.$add($rootScope.pedido).then(function(data) {
                     console.log($rootScope.pedido);
@@ -95,6 +95,12 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, $firebaseObject, $
                     objcliente.$indexFor(id);
                     $scope.modal.hide();
                     $rootScope.productos = new Array();
+                    $rootScope.pedido = new Object();
+                    $rootScope.pedido.productos = $rootScope.productos;
+                    $rootScope.pedido.vendedor = $rootScope.profileData.first_name +' '+ $rootScope.profileData.last_name;
+                    $rootScope.pedido.fecha = getDateTime();
+                    $rootScope.pedido.procesado = false;
+                    $rootScope.pedido.zona = $rootScope.profileData.zona;
                 });
 
             }
@@ -134,6 +140,7 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, $firebaseObject, $
                 console.log('ya agregaste este producto');
             }
             console.log($rootScope.productos);
+            console.log($rootScope.pedido);
             
         });
 
