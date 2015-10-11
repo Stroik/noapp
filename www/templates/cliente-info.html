@@ -1,5 +1,5 @@
 <ion-view view-title="{{dato_cliente.nombre_completo}}" hide-back-button="false">
-  <ion-content>
+  <ion-content on-swipe-right="onSwipeRight()">
 	<ion-list>
 		<ion-item class="item item-divider"><h2>Información general</h2></ion-item>
 		<ion-item class="item item-thumbnail-left">
@@ -15,7 +15,6 @@
             {{pedido.fecha}}
         </ion-item>
 	</ion-list>
-
   </ion-content>
 	<ion-tabs class="tabs-assertive tabs-icon-top">
 

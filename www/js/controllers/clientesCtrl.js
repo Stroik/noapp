@@ -6,10 +6,8 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, $firebaseObject, $
 
     listClientes.$loaded().then(function(data){
     	$scope.todosLosClientes = listClientes;
-    })
-    listClientes.$watch(function(){
-    	$scope.todosLosClientes = listClientes;
-    })
+    });
+
     $rootScope.pedido = new Object();
 
     $scope.clienteDetalle = function(index){
@@ -24,10 +22,12 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, $firebaseObject, $
     
 })
 
-.controller('ClienteInfoCtrl', function($scope, $rootScope, $ionicModal, $firebaseArray, $ionicPopup, ionicToast){
+.controller('ClienteInfoCtrl', function($scope, $rootScope, $ionicModal, $firebaseArray, $ionicPopup, ionicToast, $state){
     var refCliente = new Firebase($scope.firebaseUrl).child('clientes').child($rootScope.objKey).child('pedidos');
     var objcliente = $firebaseArray(refCliente)
-
+    $scope.onSwipeRight = function(){
+        $state.go('app.clientes');
+    }
     function getDateTime() {
         var now     = new Date(); 
         var year    = now.getFullYear();
@@ -119,7 +119,7 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, $firebaseObject, $
                         if (!$rootScope.productos.cantidad) {
                             e.preventDefault();
                         }else{
-                            return $rootScope.productos.cantidad;
+                            return $rootScope.productos.cantidad && $rootScope.productos.cantidad === '';
                         }
                     }
                 },
