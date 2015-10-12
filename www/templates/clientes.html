@@ -6,9 +6,8 @@
   	</label>
 	<ion-list class="list">
 		<ion-item ng-repeat="cliente in todosLosClientes | filter: searchCliente" 
-			 	  class="item item-icon-right" 
-				  ng-click="clienteDetalle($index)"
-			 	  href="#/app/clientes/{{cliente.nombre_completo}}">
+			 	  class="item item-icon-right"
+			 	  href="#/app/cliente/{{cliente.$id}}">
 			{{cliente.nombre_completo}}	
 			<i class="icon ion-ios-arrow-right"></i>
 		</ion-item>

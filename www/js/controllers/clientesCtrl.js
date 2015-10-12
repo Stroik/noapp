@@ -1,47 +1,28 @@
 var noapp = angular.module('noapp.controllers');
 
-noapp.controller('ClientesCtrl', function($scope, $rootScope, $firebaseObject, $firebaseArray, $ionicModal, ionicToast, $state) {
-    var refClientes = new Firebase($scope.firebaseUrl).child('clientes');
-    var listClientes = $firebaseArray(refClientes);
-
-    listClientes.$loaded().then(function(data){
-    	$scope.todosLosClientes = listClientes;
-    });
-
+noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $stateParams, $firebaseObject, $firebaseArray, $ionicModal, ionicToast, $state) {
+    var cl = Clientes.all();
+    $scope.todosLosClientes = cl;
     $rootScope.pedido = new Object();
-
-    $scope.clienteDetalle = function(index){
-    	if(index != null || index != undefined){
-            var miCliente = listClientes[index];
-    		$rootScope.dato_cliente = miCliente;
-            $rootScope.pedido['cliente'] = miCliente;
-            console.log($rootScope.pedido);
-            $rootScope.objKey = miCliente.$id;
-    	}
-    }
     
 })
 
-.controller('ClienteInfoCtrl', function($scope, $rootScope, $ionicModal, $firebaseArray, $ionicPopup, ionicToast, $state){
-    var refCliente = new Firebase($scope.firebaseUrl).child('clientes').child($rootScope.objKey).child('pedidos');
-    var objcliente = $firebaseArray(refCliente)
-    $scope.onSwipeRight = function(){
-        $state.go('app.clientes');
-    }
+.controller('ClienteInfoCtrl', function($scope, $rootScope, Clientes, Marcas, $ionicModal, $ionicPopup, ionicToast, $state, $stateParams){
+
+    var idd = $stateParams.clienteId;
+    var oneCliente = Clientes.one(idd);
+    $scope.dato_cliente =  oneCliente;
+
+
     function getDateTime() {
-        var now     = new Date(); 
-        var year    = now.getFullYear();
-        var month   = now.getMonth()+1; 
-        var day     = now.getDate();
-        var hour    = now.getHours();
-        var minute  = now.getMinutes();
-        var second  = now.getSeconds(); 
-        if(month.toString().length == 1) {var month = '0'+month;}
+        var now     = new Date(); var year    = now.getFullYear(); var month   = now.getMonth()+1; 
+        var day     = now.getDate(); var hour    = now.getHours(); var minute  = now.getMinutes();
+        var second  = now.getSeconds(); if(month.toString().length == 1) {var month = '0'+month;}
         if(day.toString().length == 1) {var day = '0'+day;}   
         if(hour.toString().length == 1) {var hour = '0'+hour;}
         if(minute.toString().length == 1) {var minute = '0'+minute;}
         if(second.toString().length == 1) {var second = '0'+second;}
-        var ampm = hour >= 12 ? 'PM' : 'AM';
+        var ampm = hour >= 12 ? 'PM' : 'AM'; 
         var dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute+':'+second + ' ' + ampm;   
         return dateTime;
     }
@@ -59,14 +40,13 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, $firebaseObject, $
     $scope.$on('$destroy', function() {
         $scope.modal.remove();
     });
-	$scope.dato_cliente = $rootScope.dato_cliente;
 
 	$scope.abrirMarcas = function(){
 		$scope.modal.show();
 	}
     
-    var misProductos = new Firebase($scope.firebaseUrl).child('marcas');
-    var listaProductos = $firebaseArray(misProductos);
+    var listaProductos = Marcas.all();
+
 
     $rootScope.productos = [];
     $scope.productos = listaProductos;

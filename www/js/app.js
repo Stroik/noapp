@@ -110,8 +110,8 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
         }
       }
     })
-    .state('app.cliente', {
-      url: '/clientes/:clienteId',
+    .state('app.cliente-info', {
+      url: '/cliente/:clienteId',
       views: {
         'menuContent': {
           templateUrl: 'templates/cliente-info.html',

@@ -1,6 +1,6 @@
 var noapp = angular.module('noapp.controllers');
 
-noapp.controller('DescuentosCtrl', function($scope, $rootScope, $firebaseArray, $firebaseObject, $ionicModal, ionicToast, $state, $timeout) {
+noapp.controller('DescuentosCtrl', function($scope, $rootScope, Marcas, $firebaseArray, $firebaseObject, $ionicModal, ionicToast, $state, $timeout) {
   	$scope.userdata = $rootScope.profileData;
     $ionicModal.fromTemplateUrl('templates/productos-con-descuento.html', {
         scope: $scope
@@ -19,5 +19,6 @@ noapp.controller('DescuentosCtrl', function($scope, $rootScope, $firebaseArray, 
 		var promocion = $firebaseObject(ref.child(id).child(index));
 		$scope.promocion = promocion;
 	};
+
 })
 
