@@ -13,7 +13,6 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
     var oneCliente = Clientes.one(idd);
     $scope.dato_cliente =  oneCliente;
 
-
     function getDateTime() {
         var now     = new Date(); var year    = now.getFullYear(); var month   = now.getMonth()+1; 
         var day     = now.getDate(); var hour    = now.getHours(); var minute  = now.getMinutes();
@@ -25,7 +24,7 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
         var ampm = hour >= 12 ? 'PM' : 'AM'; 
         var dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute+':'+second + ' ' + ampm;   
         return dateTime;
-    }
+        }
     $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
         scope: $scope
     }).then(function (modal) {

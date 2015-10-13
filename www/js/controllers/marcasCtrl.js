@@ -1,11 +1,25 @@
 var noapp = angular.module('noapp.controllers');
 
-noapp.controller('ProductosCtrl', function($scope, $rootScope, Marcas, $ionicPopup, ionicToast, $localStorage, $stateParams){
-    var index = $stateParams.marcaId;
-    var todas = Marcas.all();
-    $scope.marcas = todas[index];
-    $scope.titulo = todas[index].marca;
+noapp.controller('MarcasCtrl', function($scope, $rootScope, $firebaseArray, $ionicModal, ionicToast, $localStorage, $ionicPopup){
 
+	$ionicModal.fromTemplateUrl('templates/productos-x-marcas.html', {
+        scope: $scope
+    }).then(function (modal) {
+        $scope.modal = modal;
+    });
+
+    var misProductos = new Firebase($scope.firebaseUrl).child('marcas');
+    var listaProductos = $firebaseArray(misProductos);
+
+    $rootScope.productos = [];
+    $scope.productos = listaProductos;
+    $scope.productosMarca = [];
+    $scope.titulo = '';
+    $scope.productosXMarca = function(index){
+    	$scope.modal.show();
+    	$scope.titulo = listaProductos[index].marca;
+    	$scope.productosMarca = listaProductos[index].productos;
+    };
     $scope.agregarProducto = function(id){
         var myPopup = $ionicPopup.show({
             template: '<input type="number" ng-model="productos.cantidad">',
@@ -42,5 +56,4 @@ noapp.controller('ProductosCtrl', function($scope, $rootScope, Marcas, $ionicPop
         });
 
     }
-
 })

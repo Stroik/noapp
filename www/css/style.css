@@ -13,3 +13,9 @@ p.tyc {
 	background: transparent !important;
 	background-color: transparent !important;
 }
+.header-menu-decoration{
+	width: 100%;
+	text-align: center;
+	background: #f5f5f5;
+}
+.header-menu-decoration img{}

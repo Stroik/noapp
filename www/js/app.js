@@ -5,7 +5,7 @@ angular.module('noapp.services', ['ionic', 'ui.router']);
 angular.module('noapp.directives', ['ionic', 'ui.router']);
 angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'firebase', 'ngStorage', 'ionic-toast'])
 
-.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, FireObj, $firebaseObject, ionicToast, $localStorage, $state) {
+.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, $firebaseObject, ionicToast, $localStorage, $state) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -120,11 +120,21 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
       }
     })
 
-  .state('app.productos', {
-    url: '/productos',
+  .state('app.marcas', {
+    url: '/marcas',
     views: {
       'menuContent': {
-        templateUrl: 'templates/productos.html',
+        templateUrl: 'templates/marcas.html',
+        controller: 'MarcasCtrl'
+      }
+    }
+  })
+
+  .state('app.productos-info', {
+    url: '/productos/:marcaId',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/productos-info.html',
         controller: 'ProductosCtrl'
       }
     }
