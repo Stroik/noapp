@@ -19,3 +19,12 @@ p.tyc {
 	background: #f5f5f5;
 }
 .header-menu-decoration img{}
+.delpedido{
+	  width: 100%;
+  padding: 0;
+  text-align: right;
+}
+.eliminar{
+	background-color: rgb(239, 71, 58);
+	color: #f8f8f8;
+}

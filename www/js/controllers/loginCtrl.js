@@ -2,20 +2,12 @@
 
 var noapp = angular.module('noapp.controllers');
 
-noapp.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAuth, $ionicLoading, $rootScope, ionicToast, $localStorage) {
-    //console.log('Login Controller Initialized');
+noapp.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAuth, $ionicLoading, $rootScope, ionicToast, $localStorage, $timeout, $window) {
 
     var ref = new Firebase($scope.firebaseUrl);
     var auth = $firebaseAuth(ref);
 
-    $ionicModal.fromTemplateUrl('templates/signup.html', {
-        scope: $scope
-    }).then(function (modal) {
-        $scope.modal = modal;
-    });
-
     $scope.signIn = function (user) {
-
         if (user && user.email && user.pwdForLogin) {
             $ionicLoading.show({
                 template: '<img src="img/loading.gif" />'
@@ -24,16 +16,16 @@ noapp.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAu
                 email: user.email,
                 password: user.pwdForLogin
             }).then(function (authData) {
-                //console.log("Logged in as:" + authData.uid);
-                ref.child("usuarios").child(authData.uid).once('value', function (snapshot) {
+                $rootScope.authData = authData;
+                ref.child("users").child(authData.uid).once('value', function (snapshot) {
                     var val = snapshot.val();
-                    // To Update AngularJS $scope either use $apply or $timeout
-                    //$scope.$apply(function () {
-                    //    $rootScope.displayName = val;
-                    //});
                 });
-                $ionicLoading.hide();
+                console.log($rootScope.authData);
                 $state.go('app.descuentos');
+                $window.location.reload(false);
+                $timeout(function(){
+                    $ionicLoading.hide();
+                }, 500);
             }).catch(function (error) {
                 alert("Ingreso incorrecto:" + error.message);
                 $ionicLoading.hide();

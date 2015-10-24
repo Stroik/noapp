@@ -5,7 +5,7 @@ angular.module('noapp.services', ['ionic', 'ui.router']);
 angular.module('noapp.directives', ['ionic', 'ui.router']);
 angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'firebase', 'ngStorage', 'ionic-toast'])
 
-.run(function($ionicPlatform, $rootScope, $location, Auth, $ionicLoading, $firebaseObject, ionicToast, $localStorage, $state) {
+.run(function($ionicPlatform, $rootScope, $location, Auth, Clientes, $ionicLoading, $firebaseObject, ionicToast, $localStorage, $state) {
   $ionicPlatform.ready(function() {
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
@@ -16,28 +16,75 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     }
   });
 
-  //$rootScope vars
+  ionic.Platform.fullScreen();
 
-  //ionic.Platform.fullScreen();
+  $rootScope.firebaseUrl = firebaseUrl;
 
-    $rootScope.firebaseUrl = firebaseUrl;
+    $rootScope.getDateTime = function() {
+      var now     = new Date(); 
+      var year    = now.getFullYear();
+      var month   = now.getMonth()+1; 
+      var day     = now.getDate();
+      var hour    = now.getHours();
+      var minute  = now.getMinutes();
+      var second  = now.getSeconds(); 
+      if(month.toString().length == 1) {var month = '0'+month;}
+      if(day.toString().length == 1) {var day = '0'+day;}   
+      if(hour.toString().length == 1) {var hour = '0'+hour;}
+      if(minute.toString().length == 1) {var minute = '0'+minute;}
+      if(second.toString().length == 1) {var second = '0'+second;}
+      var ampm = hour >= 12 ? 'PM' : 'AM';
+      var dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute+':'+second + ' ' + ampm;   
+      return dateTime;
+    };
+
+    $rootScope.codigoPedido = function(){
+        var text = "";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for( var i=0; i < 5; i++ )
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+        return text;
+    }
+  
+    $rootScope.showLoading = function(msg){
+      $ionicLoading.show({
+        template: msg ? msg : 'Cargando...'
+      });
+    };
+    $rootScope.hideLoading = function(){
+      $ionicLoading.hide();
+    };
+
+    $rootScope.$storage = $localStorage;
+
+    if(!$localStorage.pedidos){
+      $rootScope.$storage.pedidos = [];
+    }
+    if(!$localStorage.clientes){
+      $rootScope.$storage.clientes = [];
+    }else{
+      if($localStorage.clientes.lenght < 1){
+        var cl = Clientes.all();
+          cl.$loaded().then(function(){
+              cl = cl;
+          });
+          $localStorage.clientes = cl;
+          $rootScope.hideLoading();
+      }
+    }
 
     Auth.$onAuth(function (authData) {
         if (authData) {
-
             var ref = new Firebase($rootScope.firebaseUrl).child('users').child(authData.uid);
             var obj = $firebaseObject(ref);
-            obj.$bindTo($rootScope, 'profileData').then(function(){
-              //console.log($rootScope.profileData);
-            })
+            $rootScope.uid = authData.uid;
             $rootScope.authData = authData;
-            //console.log($rootScope.authData);
-            $location.path('/app/descuentos');
+            $state.go('app.descuentos');
         }
         else {
-            //console.log("No has iniciado sesión. En caso de no tener cuenta, crea una.");
             $ionicLoading.hide();
-            ionicToast.show('Debes iniciar sesión', 'middle', false, 2000);
             $rootScope.logout();
             $location.path('/login');
         }
@@ -57,8 +104,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
         // We can catch the error thrown when the $requireAuth promise is rejected
         // and redirect the user back to the home page
         if (error === "AUTH_REQUIRED") {
-            $location.path("/login");
-            $localStorage.$reset();
+            $location.path("/login");     
         }
     });
 })
@@ -70,16 +116,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     .state('app', {
     url: '/app',
     abstract: true,
-    templateUrl: 'templates/menu.html',
-    resolve: {
-        // controller will not be loaded until $waitForAuth resolves
-        // Auth refers to our $firebaseAuth wrapper in the example above
-        "currentAuth": ["Auth",
-            function (Auth) {
-                // $waitForAuth returns a promise so the resolve waits for it to complete
-                return Auth.$waitForAuth();
-      }]
-    }
+    templateUrl: 'templates/menu.html'
   })
 
   .state('app.descuentos', {
@@ -87,7 +124,16 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     views: {
       'menuContent': {
         templateUrl: 'templates/descuentos.html',
-        controller: 'DescuentosCtrl'
+        controller: 'DescuentosCtrl',
+        resolve: {
+            // controller will not be loaded until $waitForAuth resolves
+            // Auth refers to our $firebaseAuth wrapper in the example above
+            "currentAuth": ["Auth",
+                function (Auth) {
+                    // $waitForAuth returns a promise so the resolve waits for it to complete
+                    return Auth.$waitForAuth();
+          }]
+        }
       }
     }
   })
@@ -97,7 +143,34 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
       views: {
         'menuContent': {
           templateUrl: 'templates/pedidos.html',
-          controller: 'PedidosCtrl'
+          controller: 'PedidosCtrl',
+          resolve: {
+              // controller will not be loaded until $waitForAuth resolves
+              // Auth refers to our $firebaseAuth wrapper in the example above
+              "currentAuth": ["Auth",
+                  function (Auth) {
+                      // $waitForAuth returns a promise so the resolve waits for it to complete
+                      return Auth.$waitForAuth();
+            }]
+          }
+        }
+      }
+    })
+  .state('app.pedidos-edit', {
+      url: '/pedidos/editar/:pedidoId',
+      views: {
+        'menuContent': {
+          templateUrl: 'templates/pedidos-editar.html',
+          controller: 'PedidosEditCtrl',
+          resolve: {
+              // controller will not be loaded until $waitForAuth resolves
+              // Auth refers to our $firebaseAuth wrapper in the example above
+              "currentAuth": ["Auth",
+                  function (Auth) {
+                      // $waitForAuth returns a promise so the resolve waits for it to complete
+                      return Auth.$waitForAuth();
+            }]
+          }
         }
       }
     })
@@ -106,7 +179,16 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
       views: {
         'menuContent': {
           templateUrl: 'templates/clientes.html',
-          controller: 'ClientesCtrl'
+          controller: 'ClientesCtrl',
+          resolve: {
+              // controller will not be loaded until $waitForAuth resolves
+              // Auth refers to our $firebaseAuth wrapper in the example above
+              "currentAuth": ["Auth",
+                  function (Auth) {
+                      // $waitForAuth returns a promise so the resolve waits for it to complete
+                      return Auth.$waitForAuth();
+            }]
+          }
         }
       }
     })
@@ -115,7 +197,16 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
       views: {
         'menuContent': {
           templateUrl: 'templates/cliente-info.html',
-          controller: 'ClienteInfoCtrl'
+          controller: 'ClienteInfoCtrl',
+          resolve: {
+              // controller will not be loaded until $waitForAuth resolves
+              // Auth refers to our $firebaseAuth wrapper in the example above
+              "currentAuth": ["Auth",
+                  function (Auth) {
+                      // $waitForAuth returns a promise so the resolve waits for it to complete
+                      return Auth.$waitForAuth();
+            }]
+          }
         }
       }
     })
@@ -125,7 +216,16 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     views: {
       'menuContent': {
         templateUrl: 'templates/marcas.html',
-        controller: 'MarcasCtrl'
+        controller: 'MarcasCtrl',
+        resolve: {
+            // controller will not be loaded until $waitForAuth resolves
+            // Auth refers to our $firebaseAuth wrapper in the example above
+            "currentAuth": ["Auth",
+                function (Auth) {
+                    // $waitForAuth returns a promise so the resolve waits for it to complete
+                    return Auth.$waitForAuth();
+          }]
+        }
       }
     }
   })
@@ -135,7 +235,16 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     views: {
       'menuContent': {
         templateUrl: 'templates/productos-info.html',
-        controller: 'ProductosCtrl'
+        controller: 'ProductosCtrl',
+        resolve: {
+            // controller will not be loaded until $waitForAuth resolves
+            // Auth refers to our $firebaseAuth wrapper in the example above
+            "currentAuth": ["Auth",
+                function (Auth) {
+                    // $waitForAuth returns a promise so the resolve waits for it to complete
+                    return Auth.$waitForAuth();
+          }]
+        }
       }
     }
   })
@@ -153,7 +262,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
                 function (Auth) {
                     // $waitForAuth returns a promise so the resolve waits for it to complete
                     return Auth.$waitForAuth();
-        }]
+          }]
         }
       }
     }

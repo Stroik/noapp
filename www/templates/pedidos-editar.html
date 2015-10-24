@@ -1,0 +1,26 @@
+<ion-view view-title="{{pedido.cliente.nombre_completo}}">
+    <ion-content>
+        <ion-list>
+            <ion-item class="item item-divider"><h2>Cliente</h2></ion-item>
+            <ion-item class="item item-thumbnail-left">
+                <img ng-src="{{pedido.cliente.imagen}}" />
+                <h2>{{pedido.cliente.nombres}} {{pedido.cliente.apellidos}}</h2>
+                <p>N° de cuenta: {{pedido.cliente.numero_cuenta}}</p>
+                <p ng-show="pedido.cliente.moroso" style="color:red;">Posee deudas incumplidas</p>
+                <p ng-show="!pedido.cliente.moroso" style="color:green">No posee deudas</p>
+            </ion-item>
+            <ion-item class="item item-icon-right eliminar" ng-click="removePedido(pedido)">
+                Eliminar todo el pedido
+                <i class="icon ion-trash-a"></i>
+            </ion-item>
+            <ion-item class="item item-divider"><h2>Productos</h2></ion-item>
+            <ion-item ng-repeat="producto in pedido.productos"  class="item item-remove-animate">
+                <h2>{{producto.nombre}}</h2>
+                <p>Precio c/u: {{producto.precio}}</p>
+                <p>Cantidad: {{producto.cantidad}}</p>
+                <ion-option-button class="button-assertive icon ion-trash-a" ng-click="delProducto(producto)"></ion-option-button>
+                <ion-option-button class="button-dark icon ion-arrow-swap" ng-click="cambiarCantidad($index)"></ion-option-button>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+</ion-view>

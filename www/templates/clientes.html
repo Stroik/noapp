@@ -5,7 +5,7 @@
 	    <input type="text" placeholder="Buscar cliente" ng-model="searchCliente">
   	</label>
 	<ion-list class="list">
-		<ion-item ng-repeat="cliente in todosLosClientes | filter: searchCliente" 
+		<ion-item ng-repeat="cliente in $storage.clientes | filter: searchCliente" 
 			 	  class="item item-icon-right"
 			 	  href="#/app/cliente/{{cliente.$id}}">
 			{{cliente.nombre_completo}}	

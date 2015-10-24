@@ -1,36 +1,34 @@
 var noapp = angular.module('noapp.controllers');
 
-noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $stateParams, $firebaseObject, $firebaseArray, $ionicModal, ionicToast, $state) {
-    var cl = Clientes.all();
-    $scope.todosLosClientes = cl;
+noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $stateParams, $localStorage, $ionicModal, ionicToast, $state) {
+    $rootScope.showLoading('Cargando...');
+
+    if($localStorage.clientes.length > 0){
+        $rootScope.hideLoading();
+    }else{ 
+        var cl = Clientes.all();
+        cl.$loaded().then(function(){
+            cl = cl;
+            $rootScope.hideLoading();
+        });
+        $localStorage.clientes = cl;
+        $rootScope.hideLoading();
+    }
     $rootScope.pedido = new Object();
-    
 })
 
-.controller('ClienteInfoCtrl', function($scope, $rootScope, Clientes, Marcas, $ionicModal, $ionicPopup, ionicToast, $state, $stateParams){
+.controller('ClienteInfoCtrl', function($scope, $rootScope, Clientes, Marcas, Pedidos, $ionicModal, $ionicPopup, ionicToast, $state, $stateParams, $location){
 
     var idd = $stateParams.clienteId;
     var oneCliente = Clientes.one(idd);
     $scope.dato_cliente =  oneCliente;
+    $rootScope.pedido.cliente = $scope.dato_cliente;
 
-    function getDateTime() {
-        var now     = new Date(); var year    = now.getFullYear(); var month   = now.getMonth()+1; 
-        var day     = now.getDate(); var hour    = now.getHours(); var minute  = now.getMinutes();
-        var second  = now.getSeconds(); if(month.toString().length == 1) {var month = '0'+month;}
-        if(day.toString().length == 1) {var day = '0'+day;}   
-        if(hour.toString().length == 1) {var hour = '0'+hour;}
-        if(minute.toString().length == 1) {var minute = '0'+minute;}
-        if(second.toString().length == 1) {var second = '0'+second;}
-        var ampm = hour >= 12 ? 'PM' : 'AM'; 
-        var dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute+':'+second + ' ' + ampm;   
-        return dateTime;
-        }
     $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
         scope: $scope
     }).then(function (modal) {
         $scope.modal = modal;
     });
-
     $ionicModal.fromTemplateUrl('templates/productos-x-marcas.html', {
         scope: $scope
     }).then(function (modal) {
@@ -57,31 +55,29 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
         $scope.productosMarca = listaProductos[index].productos;
     };
     $rootScope.pedido.productos = $rootScope.productos;
-    $rootScope.pedido.vendedor = $rootScope.profileData.first_name +' '+ $rootScope.profileData.last_name;
-    $rootScope.pedido.fecha = getDateTime();
+    $rootScope.pedido.vendedor = $rootScope.authData.first_name +' '+ $rootScope.authData.last_name;
+    $rootScope.pedido.fecha = $rootScope.getDateTime();
     $rootScope.pedido.procesado = false;
-    $rootScope.pedido.zona = $rootScope.profileData.zona;
+    $rootScope.pedido.codigo = $rootScope.codigoPedido();
 
     $scope.procesarPedido = function(pedido){
         if(pedido){
             console.log($scope.pedido);
             if(pedido.productos == undefined){
-                alert('No se puede el pedido porque todavía no has agregado productos');
+                ionicToast.show('No puedes procesar un pedido sin productos. Noc noc!', 'middle', true, 2000);
             }else{
-                objcliente.$add($rootScope.pedido).then(function(data) {
-                    console.log($rootScope.pedido);
-                    var id = refCliente.key();
-                    objcliente.$indexFor(id);
-                    $scope.modal.hide();
-                    $rootScope.productos = new Array();
-                    $rootScope.pedido = new Object();
-                    $rootScope.pedido.productos = $rootScope.productos;
-                    $rootScope.pedido.vendedor = $rootScope.profileData.first_name +' '+ $rootScope.profileData.last_name;
-                    $rootScope.pedido.fecha = getDateTime();
-                    $rootScope.pedido.procesado = false;
-                    $rootScope.pedido.zona = $rootScope.profileData.zona;
-                });
-
+                $rootScope.pedido.cliente.pedidos = [];
+                Pedidos.add($rootScope.pedido);
+                $scope.modal.hide();
+                $rootScope.productos = new Array();
+                $rootScope.pedido = new Object();
+                $rootScope.pedido.productos = $rootScope.productos;
+                $rootScope.pedido.vendedor = 'Dionicio Longobardi';
+                $rootScope.pedido.fecha = $rootScope.getDateTime();
+                $rootScope.pedido.procesado = false;
+                $rootScope.pedido.codigo = $rootScope.codigoPedido();
+                console.log($rootScope);
+                window.history.back();
             }
         }else{
             ionicToast.show('Debes completar todos los campos', 'middle', true, 2000);
@@ -115,12 +111,10 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
                 elProducto.cantidad = res;
             if($rootScope.productos.indexOf(elProducto) == -1 && res != undefined){
                 $rootScope.productos.push(elProducto);
+                console.log($rootScope);
             }else{
                 console.log('ya agregaste este producto');
-            }
-            console.log($rootScope.productos);
-            console.log($rootScope.pedido);
-            
+            }            
         });
 
     }

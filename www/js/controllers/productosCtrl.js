@@ -38,7 +38,6 @@ noapp.controller('ProductosCtrl', function($scope, $rootScope, Marcas, $ionicPop
                 console.log('ya agregaste este producto');
             }
             console.log($rootScope.productos);
-            
         });
 
     }
