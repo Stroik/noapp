@@ -81,6 +81,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             var obj = $firebaseObject(ref);
             $rootScope.uid = authData.uid;
             $rootScope.authData = authData;
+            $rootScope.vendedor = obj;
             $state.go('app.descuentos');
         }
         else {

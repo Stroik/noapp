@@ -25,7 +25,7 @@ angular.module('noapp.services')
 
 					var clientePedidos= $firebaseArray(refClientes.child(clienteId).child('pedidos'));
 					clientePedidos.$add(pedido).then(function(ref){
-						$rootScope.pedido = {};
+						$rootScope.pedido = new Object();
 						$localStorage.pedidos = new Array();
 						$rootScope.hideLoading();
 						ionicToast.show('Los pedidos se han enviado correctamente al servidor', 'middle', true, 2500);

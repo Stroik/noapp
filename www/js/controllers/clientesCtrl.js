@@ -55,7 +55,7 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
         $scope.productosMarca = listaProductos[index].productos;
     };
     $rootScope.pedido.productos = $rootScope.productos;
-    $rootScope.pedido.vendedor = $rootScope.authData.first_name +' '+ $rootScope.authData.last_name;
+    $rootScope.pedido.vendedor = $rootScope.vendedor.first_name +' '+ $rootScope.vendedor.last_name;
     $rootScope.pedido.fecha = $rootScope.getDateTime();
     $rootScope.pedido.procesado = false;
     $rootScope.pedido.codigo = $rootScope.codigoPedido();
