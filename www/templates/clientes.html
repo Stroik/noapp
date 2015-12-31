@@ -7,7 +7,8 @@
 	<ion-list class="list">
 		<ion-item ng-repeat="cliente in $storage.clientes | filter: searchCliente" 
 			 	  class="item item-icon-right"
-			 	  href="#/app/cliente/{{cliente.$id}}">
+			 	  href="#/app/cliente/{{cliente.$id}}" 
+			 	  ng-if="cliente.vendedor_id === vendedorId">
 			{{cliente.nombre_completo}}	
 			<i class="icon ion-ios-arrow-right"></i>
 		</ion-item>

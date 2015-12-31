@@ -15,6 +15,8 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
         $rootScope.hideLoading();
     }
     $rootScope.pedido = new Object();
+    $scope.vendedorId = $rootScope.vendedor.id;
+
 })
 
 .controller('ClienteInfoCtrl', function($scope, $rootScope, Clientes, Marcas, Pedidos, $ionicModal, $ionicPopup, ionicToast, $state, $stateParams, $location){
