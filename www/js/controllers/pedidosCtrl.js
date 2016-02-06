@@ -1,6 +1,6 @@
 var noapp = angular.module('noapp.controllers');
 
-noapp.controller('PedidosCtrl', function($scope, $rootScope, Pedidos, $firebaseArray, $firebaseObject, $ionicModal, ionicToast, $state, $timeout) {
+noapp.controller('PedidosCtrl', function($scope, $rootScope, Pedidos, $firebaseArray, $firebaseObject, $ionicModal, ionicToast, $state, $timeout, $window) {
 
    /* Modals */
    $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
@@ -33,7 +33,6 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, Pedidos, $firebaseA
     /* Funciones para gestionar pedidos */
     $scope.enviarPedidos = function(){
         Pedidos.send();
-
     };
 
     $scope.nuevoPedido = function(){

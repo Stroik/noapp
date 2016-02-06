@@ -6,12 +6,15 @@
 				<p>{{pedido.fecha}}</p>
 				<p>De: {{pedido.vendedor}}</p>
 			</ion-item>
+			<ion-item class="item item-remove-animate" ng-show="!$storage.pedidos.length">
+				<h2>No se han registrado pedidos</h2>
+			</ion-item>
 		</ion-list>
 	</ion-content>
 	<ion-tabs class="tabs-assertive tabs-icon-top">
 	  <ion-tab title="Nuevo pedido" icon-on="ion-plus-circled" icon-off="ion-plus-circled" ng-click="nuevoPedido()">
 	  </ion-tab>
-	  <ion-tab title="Enviar Pedidos" icon-on="ion-paper-airplane" icon-off="ion-paper-airplane" ng-click="enviarPedidos()">
+	  <ion-tab title="Enviar Pedidos" icon="ion-paper-airplane" ng-click="enviarPedidos()">
 	  </ion-tab>
 	</ion-tabs>
 </ion-view>

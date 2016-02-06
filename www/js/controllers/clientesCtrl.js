@@ -16,7 +16,6 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
     }
     $rootScope.pedido = new Object();
     $scope.vendedorId = $rootScope.vendedor.id;
-
 })
 
 .controller('ClienteInfoCtrl', function($scope, $rootScope, Clientes, Marcas, Pedidos, $ionicModal, $ionicPopup, ionicToast, $state, $stateParams, $location){
@@ -113,7 +112,6 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
                 elProducto.cantidad = res;
             if($rootScope.productos.indexOf(elProducto) == -1 && res != undefined){
                 $rootScope.productos.push(elProducto);
-                console.log($rootScope);
             }else{
                 console.log('ya agregaste este producto');
             }            

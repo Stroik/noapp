@@ -41,10 +41,8 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
     $rootScope.codigoPedido = function(){
         var text = "";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
         for( var i=0; i < 5; i++ )
             text += possible.charAt(Math.floor(Math.random() * possible.length));
-
         return text;
     }
   
@@ -53,6 +51,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
         template: msg ? msg : 'Cargando...'
       });
     };
+
     $rootScope.hideLoading = function(){
       $ionicLoading.hide();
     };
@@ -102,8 +101,6 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
 
 
     $rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
-        // We can catch the error thrown when the $requireAuth promise is rejected
-        // and redirect the user back to the home page
         if (error === "AUTH_REQUIRED") {
             $location.path("/login");     
         }
@@ -127,11 +124,23 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
         templateUrl: 'templates/descuentos.html',
         controller: 'DescuentosCtrl',
         resolve: {
-            // controller will not be loaded until $waitForAuth resolves
-            // Auth refers to our $firebaseAuth wrapper in the example above
-            "currentAuth": ["Auth",
+              "currentAuth": ["Auth",
                 function (Auth) {
-                    // $waitForAuth returns a promise so the resolve waits for it to complete
+                    return Auth.$waitForAuth();
+          }]
+        }
+      }
+    }
+  })
+  .state('app.escritorio', {
+    url: '/escritorio',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/escritorio.html',
+        controller: 'EscritorioCtrl',
+        resolve: {
+              "currentAuth": ["Auth",
+                function (Auth) {
                     return Auth.$waitForAuth();
           }]
         }
@@ -146,11 +155,8 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
           templateUrl: 'templates/pedidos.html',
           controller: 'PedidosCtrl',
           resolve: {
-              // controller will not be loaded until $waitForAuth resolves
-              // Auth refers to our $firebaseAuth wrapper in the example above
               "currentAuth": ["Auth",
                   function (Auth) {
-                      // $waitForAuth returns a promise so the resolve waits for it to complete
                       return Auth.$waitForAuth();
             }]
           }
