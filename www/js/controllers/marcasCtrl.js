@@ -49,10 +49,8 @@ noapp.controller('MarcasCtrl', function($scope, $rootScope, $firebaseArray, $ion
             if($rootScope.productos.indexOf(elProducto) == -1 && res != undefined){
                 $rootScope.productos.push(elProducto);
             }else{
-                console.log('ya agregaste este producto');
             }
-            console.log($rootScope.productos);
-            
+           
         });
 
     }

@@ -10,7 +10,6 @@ angular.module('noapp.services')
 		return{
 			clientes: function(){
 				if (typeof clientes[0] !== 'undefined' && clientes[0] !== null) {
-					console.log(clientes);
 					return $localStorage.clientes.push(clientes);
 				}
 			},

@@ -9,8 +9,15 @@
             <p ng-show="cliente.moroso" style="color:red;">Posee deudas incumplidas</p>
             <p ng-show="!cliente.moroso" style="color:green">No posee deudas</p>
         </ion-item>
+        <ion-item class="item item-divider"><h2>Detalle</h2></ion-item>
+        <ion-item class="item item-mini"><strong>Razón Social:</strong> {{dato_cliente.razon_social}}</ion-item>
+        <ion-item class="item item-mini"><strong>CUIT:</strong> {{dato_cliente.CUIT}}</ion-item>
+        <ion-item class="item item-mini"><strong>Dirección:</strong> {{dato_cliente.domicilio}}</ion-item>
+        <ion-item class="item item-mini"><strong>Saldo:</strong> {{dato_cliente.saldo | currency:"$":2}}</ion-item>
+        <ion-item class="item item-mini"><strong>Limite de crédito:</strong> {{dato_cliente.limite_credito | currency: "$":2}}</ion-item>
+
         <ion-item class="item item-divider"><h2>Últimos pedidos</h2></ion-item>
-        <ion-item class="item item-icon-left" ng-repeat="pedido in dato_cliente.pedidos">
+        <ion-item class="item item-icon-left" ng-repeat="pedido in dato_cliente.pedidos | limitTo: limit">
         	<i class="icon ion-android-calendar"></i>
             {{pedido.fecha}}
         </ion-item>

@@ -6,11 +6,14 @@
   	</label>
 	<ion-list class="list">
 		<ion-item ng-repeat="cliente in $storage.clientes | filter: searchCliente" 
-			 	  class="item item-icon-right"
-			 	  href="#/app/cliente/{{cliente.$id}}" 
-			 	  ng-if="cliente.vendedor_id === vendedorId">
-			{{cliente.nombre_completo}}	
-			<i class="icon ion-ios-arrow-right"></i>
+		 	class="item item-avatar item-icon-right"
+		 	href="#/app/cliente/{{cliente.$id}}" 
+	 	  	ng-if="cliente.vendedor_id === vendedorId">
+		 	  	<img ng-src="{{cliente.imagen}}">
+				<h2>{{cliente.nombre_completo}}</h2>
+				<p>Nº cuenta: {{cliente.numero_cuenta}}</p>	
+				<p>Dirección: {{cliente.domicilio}}</p>	
+				<i class="icon ion-ios-arrow-right"></i>
 		</ion-item>
 	</ion-list>
   </ion-content>

@@ -81,7 +81,7 @@ angular.module('noapp', ['ionic', 'noapp.controllers', 'noapp.services', 'fireba
             $rootScope.uid = authData.uid;
             $rootScope.authData = authData;
             $rootScope.vendedor = obj;
-            $state.go('app.descuentos');
+            $state.go('app.escritorio');
         }
         else {
             $ionicLoading.hide();

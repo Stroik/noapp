@@ -14,7 +14,7 @@
                     <h2>{{producto.nombre}}</h2>
                     <p>{{producto.descripcion}}</p> 
                     <p> Código: {{producto.codigo}}</p> 
-                    
+                    <p>Precio: {{producto.precio | currency:"$":2}}</p>
                     <ion-option-button class="button-dark icon ion-plus-circled" ng-click="agregarProducto($index)"></ion-option-button>
             </ion-item>
     </ion-list>

@@ -4,7 +4,7 @@
 			<ion-item class="item item-remove-animate" ng-repeat="pedido in $storage.pedidos" ng-if="pedido.productos && !pedido.procesado" href="#/app/pedidos/editar/{{$index}}">
 				<h2>{{pedido.cliente.nombres}} {{pedido.cliente.apellidos}}</h2>
 				<p>{{pedido.fecha}}</p>
-				<p>De: {{pedido.vendedor}}</p>
+				<p>De: {{pedido.vendedor.displayName}}</p>
 			</ion-item>
 			<ion-item class="item item-remove-animate" ng-show="!$storage.pedidos.length">
 				<h2>No se han registrado pedidos</h2>

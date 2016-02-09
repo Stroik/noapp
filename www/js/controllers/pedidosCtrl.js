@@ -40,14 +40,10 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, Pedidos, $firebaseA
     }
 
     $rootScope.agregarPedido = function(pedido){
-        console.log($rootScope.productos);
         if(pedido){
-            console.log($scope.pedido);
             if(pedido.productos == undefined){
-                console.log('necesito productos!');
             }else{
                 list.$add($scope.pedido).then(function(data) {
-                    console.log($scope.pedido);
                     var id = ref.key();
                     list.$indexFor(id);
                     $scope.modal.hide();
@@ -62,7 +58,6 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, Pedidos, $firebaseA
     };
 
     $scope.setCliente = function(index){
-        console.log(listClientes[index]);
         $scope.pedido.cliente = listClientes[index];
     };
     
@@ -96,7 +91,6 @@ noapp.controller('PedidosCtrl', function($scope, $rootScope, Pedidos, $firebaseA
         if(confirmar){
             listp.$remove(item).then(function(ref) {
               ref.key() === item.$id;
-              console.log($scope.pedidos);
             });
         }
     }
@@ -131,5 +125,4 @@ noapp.controller('PedidosEditCtrl', function($scope, $rootScope, Pedidos, $ionic
             }
         }
     };
-    console.log($localStorage);
 })

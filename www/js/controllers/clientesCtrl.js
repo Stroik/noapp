@@ -1,6 +1,6 @@
 var noapp = angular.module('noapp.controllers');
 
-noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $stateParams, $localStorage, $ionicModal, ionicToast, $state) {
+noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $stateParams, $localStorage, $ionicModal, ionicToast, $state, Zonas) {
     $rootScope.showLoading('Cargando...');
 
     if($localStorage.clientes.length > 0){
@@ -16,6 +16,7 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
     }
     $rootScope.pedido = new Object();
     $scope.vendedorId = $rootScope.vendedor.id;
+    $scope.zonas = Zonas.all();
 })
 
 .controller('ClienteInfoCtrl', function($scope, $rootScope, Clientes, Marcas, Pedidos, $ionicModal, $ionicPopup, ionicToast, $state, $stateParams, $location){
@@ -24,6 +25,7 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
     var oneCliente = Clientes.one(idd);
     $scope.dato_cliente =  oneCliente;
     $rootScope.pedido.cliente = $scope.dato_cliente;
+    $scope.limit = 5;
 
     $ionicModal.fromTemplateUrl('templates/nuevo-pedido.html', {
         scope: $scope
@@ -63,21 +65,19 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
 
     $scope.procesarPedido = function(pedido){
         if(pedido){
-            console.log($scope.pedido);
             if(pedido.productos == undefined){
                 ionicToast.show('No puedes procesar un pedido sin productos. Noc noc!', 'middle', true, 2000);
             }else{
                 $rootScope.pedido.cliente.pedidos = [];
+                $rootScope.pedido.vendedor = $rootScope.vendedor;
                 Pedidos.add($rootScope.pedido);
                 $scope.modal.hide();
                 $rootScope.productos = new Array();
                 $rootScope.pedido = new Object();
                 $rootScope.pedido.productos = $rootScope.productos;
-                $rootScope.pedido.vendedor = 'Dionicio Longobardi';
                 $rootScope.pedido.fecha = $rootScope.getDateTime();
                 $rootScope.pedido.procesado = false;
                 $rootScope.pedido.codigo = $rootScope.codigoPedido();
-                console.log($rootScope);
                 window.history.back();
             }
         }else{
@@ -113,7 +113,6 @@ noapp.controller('ClientesCtrl', function($scope, $rootScope, Clientes, $statePa
             if($rootScope.productos.indexOf(elProducto) == -1 && res != undefined){
                 $rootScope.productos.push(elProducto);
             }else{
-                console.log('ya agregaste este producto');
             }            
         });
 

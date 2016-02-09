@@ -1,24 +1,11 @@
 <ion-view view-title="{{titulo}}">
-  <ion-content padding="true">
-	<h5>Opciones vendedores</h5>
-	<div class="button-bar">
-	  <a class="button icon-top ion-thumbsup">Descuentos</a>
-	  <a class="button icon-top ion-arrow-graph-up-right">Objetivos</a>
-	  <a class="button icon-top ion-person">Perfil</a>
-	</div>
-  	<h5>Gestión comercial</h5>
-	<div class="button-bar">
-	  <a class="button icon-top ion-person-stalker">Clientes</a>
-	  <a class="button icon-top ion-android-cart">Productos</a>
-	  <a class="button icon-top ion-plus-circled">Pedidos</a>
-	</div>
-	<p></p>
-	<div class="button-bar">
-	  <a class="button button-assertive icon-top ion-paper-airplane">Enviar pedidos realizados</a>
-	</div>
-	<p></p>
-	<div class="button-bar">
-	  <a class="button button-dark icon-top ion-stats-bars">Estadísticas de venta</a>
-	</div>
+  <ion-content padding="false">
+	<ion-list class="app-menu">
+		<ion-item ng-repeat="item in menu" class="item item-icon-left item-icon-right" ui-sref="{{item.link}}" >
+			<i class="icon {{item.icon}} assertive"></i>
+			{{item.title}} <span ng-if="item.cantidad">({{item.cantidad}})</span>
+			<i class="icon ion-ios-arrow-right"></i>
+		</ion-item>
+	</ion-list>
   </ion-content>
 </ion-view>

@@ -20,8 +20,7 @@ noapp.controller('LoginCtrl', function ($scope, $ionicModal, $state, $firebaseAu
                 ref.child("users").child(authData.uid).once('value', function (snapshot) {
                     var val = snapshot.val();
                 });
-                console.log($rootScope.authData);
-                $state.go('app.descuentos');
+                $state.go('app.escritorio');
                 $window.location.reload(false);
                 $timeout(function(){
                     $ionicLoading.hide();
